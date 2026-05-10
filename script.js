@@ -198,6 +198,9 @@ let selectedWheelCategory = "classic";
 let wheelRotation = 0;
 let kingDeck = [];
 let kingsDrawn = 0;
+let kingCupGameActive = false;
+let pendingKingCupLeaveScreen = null;
+let activeLeaveGame = "";
 
 function resetGameState(options = {}) {
   clearInterval(discussionInterval);
@@ -648,6 +651,11 @@ function addPlayer() {
   updatePlayerList();
 }
 
+function setLeaveModalText(title, text) {
+  leaveImposterModal.querySelector("h3").textContent = title;
+  leaveImposterModal.querySelector("p").textContent = text;
+}
+
 function askToLeaveImposter(targetScreen) {
   if (!imposterGameActive) {
     showScreen(targetScreen);
@@ -655,13 +663,42 @@ function askToLeaveImposter(targetScreen) {
   }
 
   warningFeedback();
-pendingImposterLeaveScreen = targetScreen;
-leaveImposterModal.classList.remove("hidden");
+
+  activeLeaveGame = "imposter";
+  pendingImposterLeaveScreen = targetScreen;
+
+  setLeaveModalText(
+    "Leave Imposter?",
+    "Are you sure you want to leave? The imposter hasn’t been found yet!"
+  );
+
+  leaveImposterModal.classList.remove("hidden");
+}
+
+function askToLeaveKingCup(targetScreen) {
+  if (!kingCupGameActive) {
+    showScreen(targetScreen);
+    return;
+  }
+
+  warningFeedback();
+
+  activeLeaveGame = "kingCup";
+  pendingKingCupLeaveScreen = targetScreen;
+
+  setLeaveModalText(
+    "Leave King’s Cup?",
+    "Are you sure you want to leave? The King’s Cup has not finished yet!"
+  );
+
+  leaveImposterModal.classList.remove("hidden");
 }
 
 function closeLeaveImposterModal() {
   leaveImposterModal.classList.add("hidden");
   pendingImposterLeaveScreen = null;
+  pendingKingCupLeaveScreen = null;
+  activeLeaveGame = "";
 }
 
 function confirmLeaveImposter() {
@@ -679,6 +716,31 @@ function confirmLeaveImposter() {
   }
 
   pendingImposterLeaveScreen = null;
+  activeLeaveGame = "";
+}
+
+function confirmLeaveKingCup() {
+  kingCupGameActive = false;
+  kingDeck = [];
+  kingsDrawn = 0;
+
+  leaveImposterModal.classList.add("hidden");
+
+  if (pendingKingCupLeaveScreen) {
+    showScreen(pendingKingCupLeaveScreen);
+  }
+
+  pendingKingCupLeaveScreen = null;
+  activeLeaveGame = "";
+}
+
+function confirmLeaveCurrentGame() {
+  if (activeLeaveGame === "kingCup") {
+    confirmLeaveKingCup();
+    return;
+  }
+
+  confirmLeaveImposter();
 }
 function removePlayer(index) {
   players.splice(index, 1);
@@ -973,6 +1035,15 @@ settingsBtn.addEventListener("click", openSettings);
 closeSettingsBtn.addEventListener("click", closeSettings);
 
 closeGameAlertBtn.addEventListener("click", closeGameAlert);
+
+stayImposterBtn.addEventListener("click", closeLeaveImposterModal);
+leaveImposterBtn.addEventListener("click", confirmLeaveCurrentGame);
+
+leaveImposterModal.addEventListener("click", event => {
+  if (event.target === leaveImposterModal) {
+    closeLeaveImposterModal();
+  }
+});
 
 settingsModal.addEventListener("click", event => {
   if (event.target === settingsModal) {
@@ -1312,6 +1383,8 @@ function shuffleDeck(deck) {
 }
 
 function setupKingCup() {
+  kingCupGameActive = true;
+
   kingDeck = shuffleDeck(createKingDeck());
   kingsDrawn = 0;
 
@@ -1502,6 +1575,8 @@ function pullKingCard(card, cardElement, dragX, dragY) {
 }
 
 function showKingCupEndScreen() {
+  kingCupGameActive = false;
+
   kingEndTitle.textContent = getText("kingCupEndTitle");
   kingEndMessage.textContent = getText("kingCupEndMessage");
   kingEndDetail.textContent = getText("kingCupEndDetail");
@@ -1510,18 +1585,15 @@ function showKingCupEndScreen() {
 }
 
 kingCupBackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  askToLeaveKingCup(packScreen);
 });
 
 kingChangePackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  askToLeaveKingCup(packScreen);
 });
 
 kingBackGamesBtn.addEventListener("click", () => {
-  resetGameState({ includeImposter: true });
-  showScreen(modeScreen);
+  askToLeaveKingCup(modeScreen);
 });
 
 kingPlayAgainBtn.addEventListener("click", () => {
