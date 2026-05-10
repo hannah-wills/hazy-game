@@ -1437,7 +1437,7 @@ function getKingBackHTML() {
   return `
     <div class="king-card-back-face">
       <div class="king-card-back-inner">
-        <span class="king-card-back-ah">HZ</span>
+        <span class="king-card-back-logo">HZ</span>
       </div>
     </div>
   `;
