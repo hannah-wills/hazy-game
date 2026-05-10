@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hazy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#21003f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Hazy" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  </head>
+
+  <body>
+    <main class="app">
+      <section id="home-screen" class="screen active">
+        <h1>Hazy</h1>
+        <p class="tagline" id="splash-tagline">
+          The neon party game for messy nights in.
+        </p>
+      </section>
+
+      <div id="players-overlay" class="sheet-overlay"></div>
+
+      <section id="players-screen" class="players-sheet">
+        <button
+          id="players-close-handle"
+          class="sheet-handle"
+          aria-label="Close players menu"
+        ></button>
+
+        <h2>Players</h2>
+        <p class="tagline">Add everyone playing tonight.</p>
+
+        <div class="player-input-box">
+          <input id="player-input" type="text" placeholder="Add a player" />
+          <button id="add-player-btn">+</button>
+        </div>
+
+        <p id="player-count">Players: 0</p>
+        <ul id="player-list"></ul>
+
+        <button id="clear-players-btn" class="secondary-btn">
+          Clear Players
+        </button>
+      </section>
+
+      <section id="mode-screen" class="screen">
+        <div class="top-bar">
+          <h2 id="choose-game-title">Choose Game</h2>
+
+          <button
+            id="settings-btn"
+            class="icon-btn settings-cog"
+            aria-label="Settings"
+          >
+            ⚙
+          </button>
+        </div>
+
+        <p class="tagline">Pick the vibes for tonight.</p>
+
+        <button id="open-players-btn" class="players-pill">
+          👥 Players (0)
+        </button>
+
+        <div class="mode-grid">
+          <button class="mode-card game-tile" data-mode="sipIf">
+            <img
+              src="assets/images/sip-if.png"
+              alt="Sip If"
+              class="game-tile-img"
+            />
+
+            <div class="game-tile-text">
+              <strong>Sip If...</strong>
+              <span>Drink if the statement applies to you</span>
+            </div>
+          </button>
+
+          <button class="mode-card game-tile" data-mode="mostLikely">
+            <img
+              src="assets/images/most-likely.png"
+              alt="Most Likely To"
+              class="game-tile-img"
+            />
+
+            <div class="game-tile-text">
+              <strong>Most Likely To</strong>
+              <span>Vote for the player that fits best</span>
+            </div>
+          </button>
+
+          <button class="mode-card game-tile" data-mode="truthOrDare">
+            <img
+              src="assets/images/truth-or-dare.png"
+              alt="Truth or Dare"
+              class="game-tile-img"
+            />
+
+            <div class="game-tile-text">
+              <strong>Truth or Dare</strong>
+              <span>Choose truth or dare cards</span>
+            </div>
+          </button>
+
+          <button class="mode-card game-tile" data-mode="neverHaveIEver">
+            <img
+              src="assets/images/never-have-i-ever.png"
+              alt="Never Have I Ever"
+              class="game-tile-img"
+            />
+
+            <div class="game-tile-text">
+              <strong>Never Have I Ever</strong>
+              <span>Confess your chaos</span>
+            </div>
+          </button>
+
+          <button class="mode-card game-tile" data-mode="imposter">
+            <img
+              src="assets/images/imposter.png"
+              alt="Imposter"
+              class="game-tile-img"
+            />
+
+            <div class="game-tile-text">
+              <strong>Imposter</strong>
+              <span>Find the secret imposters</span>
+            </div>
+          </button>
+
+          <button class="mode-card game-tile" data-mode="wouldYouRather">
+            <img
+              src="assets/images/would-you-rather.png"
+              alt="Would You Rather"
+              class="game-tile-img"
+            />
+
+            <div class="game-tile-text">
+              <strong>Would You Rather</strong>
+              <span>Pick one of two options per player</span>
+            </div>
+          </button>
+
+          <button class="mode-card game-tile" data-mode="dareRoulette">
+            <img
+              src="assets/images/dare-roulette.png"
+              alt="Dare Roulette"
+              class="game-tile-img"
+            />
+            <div class="game-tile-text">
+              <strong>Dare Roulette</strong>
+              <span>Spin the wheel to get a random dare</span>
+            </div>
+          </button>
+
+          <button class="mode-card game-tile" data-mode="kingCup">
+            <img
+              src="assets/images/kings-cup.png"
+              alt="King's Cup"
+              class="game-tile-img"
+            />
+
+            <div class="game-tile-text">
+              <strong>King's Cup</strong>
+              <span>Drag cards and follow the rule</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <section id="imposter-settings-screen" class="screen">
+        <div class="top-bar">
+          <button id="imposter-settings-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>Imposter</h2>
+        </div>
+
+        <p class="tagline">Choose your game settings.</p>
+
+        <div class="imposter-settings-box">
+          <h3>Hints for Imposters</h3>
+          <button id="hint-toggle-btn" class="toggle-btn active">ON</button>
+        </div>
+
+        <div class="imposter-settings-box">
+          <h3>Number of Imposters</h3>
+
+          <div class="imposter-count-controls">
+            <button id="imposter-minus-btn">−</button>
+            <span id="imposter-count">1</span>
+            <button id="imposter-plus-btn">+</button>
+          </div>
+        </div>
+
+        <div class="imposter-settings-box">
+          <h3>Discussion Timer</h3>
+
+          <div class="timer-options">
+            <button class="timer-option active" data-minutes="1">1</button>
+            <button class="timer-option" data-minutes="2">2</button>
+            <button class="timer-option" data-minutes="3">3</button>
+            <button class="timer-option" data-minutes="5">5</button>
+            <button class="timer-option" data-minutes="10">10</button>
+            <button class="timer-option" data-minutes="15">15</button>
+          </div>
+
+          <p class="timer-label">minutes</p>
+        </div>
+
+        <button id="imposter-settings-continue-btn" class="launch-btn">
+          Continue
+        </button>
+      </section>
+
+      <section id="pack-screen" class="screen">
+        <div class="top-bar">
+          <button id="pack-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2 id="pack-screen-title">Choose Pack</h2>
+          <button id="pack-help-btn" class="icon-btn">?</button>
+        </div>
+
+        <p class="tagline">Pick how chaotic you want it.</p>
+
+        <button id="pack-players-btn" class="players-pill">
+          👥 Players (0)
+        </button>
+
+        <div class="mode-grid">
+          <button class="pack-card" data-pack="classic">
+            <img src="assets/images/classic-pack.png" alt="Classic" />
+            <div>
+              <strong>Classic</strong>
+              <span>Free / normal party prompts</span>
+            </div>
+          </button>
+
+          <button class="pack-card" data-pack="spicy">
+            <img src="assets/images/spicy-pack.png" alt="Spicy" />
+            <div>
+              <strong>Spicy</strong>
+              <span>Flirty / slightly risky prompts</span>
+            </div>
+          </button>
+
+          <button class="pack-card locked" data-pack="crazy">
+            <img src="assets/images/crazy-pack.png" alt="Crazy" />
+            <div>
+              <strong>Crazy</strong>
+              <span>Coming soon</span>
+            </div>
+          </button>
+
+          <button class="pack-card locked" data-pack="university">
+            <img src="assets/images/university-pack.png" alt="University" />
+            <div>
+              <strong>University</strong>
+              <span>Coming soon</span>
+            </div>
+          </button>
+
+          <button class="pack-card locked" data-pack="couples">
+            <img src="assets/images/couples-pack.png" alt="Couples" />
+            <div>
+              <strong>Couples</strong>
+              <span>Coming soon</span>
+            </div>
+          </button>
+
+          <button class="pack-card locked" data-pack="girlsNight">
+            <img src="assets/images/girls-night-pack.png" alt="Girls Night" />
+            <div>
+              <strong>Girls Night</strong>
+              <span>Coming soon</span>
+            </div>
+          </button>
+        </div>
+
+        <button id="launch-btn" class="launch-btn" disabled>Launch</button>
+      </section>
+
+      <section id="game-intro-screen" class="screen">
+        <div class="top-bar">
+          <button id="intro-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2 id="intro-title">Game</h2>
+        </div>
+
+        <p class="tagline" id="intro-tagline">Get ready.</p>
+
+        <div class="card intro-card">
+          <p id="intro-text">Game instructions go here.</p>
+        </div>
+
+        <button id="intro-start-btn" class="main-btn">Start Game</button>
+      </section>
+
+      <section id="game-screen" class="screen">
+        <div class="top-bar">
+          <button id="back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2 class="mode-label">Sip If...</h2>
+        </div>
+
+        <div class="card">
+          <p id="sip-amount"></p>
+          <p id="player-name"></p>
+          <p id="card-text"></p>
+        </div>
+
+        <button id="next-btn" class="main-btn">Next Card</button>
+
+        <button id="game-change-pack-btn" class="secondary-btn game-action-btn">
+          Change Pack
+        </button>
+
+        <button id="game-back-games-btn" class="secondary-btn game-action-btn">
+          Back to Games
+        </button>
+      </section>
+
+      <section id="truth-dare-screen" class="screen">
+        <div class="top-bar">
+          <button id="truth-dare-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>Truth or Dare</h2>
+        </div>
+
+        <div class="card">
+          <p id="truth-dare-player"></p>
+          <p id="truth-dare-text">Choose Truth or Dare</p>
+        </div>
+
+        <div class="truth-dare-buttons">
+          <button id="truth-btn" class="main-btn">Truth</button>
+          <button id="dare-btn" class="main-btn">Dare</button>
+        </div>
+
+        <button id="truth-dare-next-btn" class="main-btn">Next Player</button>
+
+        <button
+          id="truth-dare-change-pack-btn"
+          class="secondary-btn game-action-btn"
+        >
+          Change Pack
+        </button>
+
+        <button
+          id="truth-dare-back-games-btn"
+          class="secondary-btn game-action-btn"
+        >
+          Back to Games
+        </button>
+      </section>
+
+      <section id="imposter-reveal-screen" class="screen">
+        <div class="top-bar">
+          <button id="imposter-reveal-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+
+          <h2>Imposter</h2>
+        </div>
+
+        <p class="tagline" id="pass-phone-text">Pass the phone to Player</p>
+
+        <div class="card imposter-card">
+          <p id="imposter-reveal-instruction">
+            Make sure nobody else is looking
+          </p>
+          <p id="imposter-role-text" class="hidden-role">Hidden</p>
+          <p id="imposter-hint-text"></p>
+        </div>
+
+        <button id="reveal-role-btn" class="main-btn">Reveal Role</button>
+
+        <button id="next-imposter-player-btn" class="main-btn hidden">
+          Next Player
+        </button>
+      </section>
+
+      <section id="imposter-discussion-screen" class="screen">
+        <div class="top-bar">
+          <button id="discussion-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>Discussion</h2>
+        </div>
+
+        <p class="tagline">Find the imposter before time runs out.</p>
+
+        <div class="card">
+          <p id="discussion-starter-label">Discussion starts with</p>
+          <p id="discussion-starter-name">Player</p>
+          <p id="discussion-timer">01:00</p>
+        </div>
+
+        <button id="vote-now-btn" class="main-btn">Vote Now</button>
+      </section>
+
+      <section id="imposter-vote-screen" class="screen">
+        <div class="top-bar">
+          <button id="vote-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>Vote</h2>
+        </div>
+
+        <p class="tagline">Who do you think is the imposter?</p>
+
+        <div id="vote-player-list" class="mode-grid"></div>
+      </section>
+
+      <section id="imposter-result-screen" class="screen">
+        <div class="top-bar">
+          <h2 id="imposter-result-title">Result</h2>
+        </div>
+
+        <p class="tagline" id="imposter-result-message">
+          Result message goes here.
+        </p>
+
+        <div class="card">
+          <p id="imposter-result-detail"></p>
+        </div>
+
+        <button id="imposter-result-continue-btn" class="main-btn">
+          Continue
+        </button>
+
+        <button
+          id="imposter-result-back-games-btn"
+          class="secondary-btn game-action-btn"
+        >
+          Back to Games
+        </button>
+      </section>
+
+      <section id="would-you-rather-screen" class="screen">
+        <div class="top-bar">
+          <button id="wyr-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>Would You Rather</h2>
+        </div>
+
+        <div class="card">
+          <p id="wyr-player-name"></p>
+          <p id="wyr-question-text">Everyone answers. The minority drinks.</p>
+          <p class="wyr-rule-text">
+            Everyone chooses a side. The minority drinks.
+          </p>
+        </div>
+
+        <div class="wyr-buttons">
+          <button id="option1-btn" class="main-btn">Option 1</button>
+          <button id="option2-btn" class="main-btn">Option 2</button>
+        </div>
+
+        <button id="wyr-next-btn" class="main-btn">Next Question</button>
+
+        <button id="wyr-change-pack-btn" class="secondary-btn game-action-btn">
+          Change Pack
+        </button>
+
+        <button id="wyr-back-games-btn" class="secondary-btn game-action-btn">
+          Back to Games
+        </button>
+      </section>
+
+      <section id="dare-wheel-screen" class="screen">
+        <div class="top-bar">
+          <button id="wheel-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>Dare Roulette</h2>
+        </div>
+
+        <p class="tagline">Spin the wheel to get your dare!</p>
+
+        <div class="wheel-container">
+          <div id="wheel" class="wheel">
+            <div class="wheel-inner"></div>
+          </div>
+          <div id="wheel-pointer" class="wheel-pointer">▼</div>
+        </div>
+
+        <button id="spin-wheel-btn" class="main-btn">Spin!</button>
+
+        <p id="wheel-result" class="wheel-result"></p>
+
+        <button
+          id="wheel-change-category-btn"
+          class="secondary-btn game-action-btn"
+        >
+          Change Category
+        </button>
+
+        <button id="wheel-back-games-btn" class="secondary-btn game-action-btn">
+          Back to Games
+        </button>
+      </section>
+
+      <section id="king-cup-screen" class="screen">
+        <div class="top-bar">
+          <button id="king-cup-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>King's Cup</h2>
+        </div>
+
+        <p class="tagline" id="king-cup-tagline">
+          Drag a card from the circle and follow the rule.
+        </p>
+
+        <div class="king-table">
+          <div id="king-card-circle" class="king-card-circle"></div>
+
+          <div class="king-cup-center">
+            <span>👑</span>
+            <strong>KING'S<br />CUP</strong>
+          </div>
+        </div>
+
+        <div class="card king-rule-card">
+          <p id="king-card-name">Choose a card</p>
+          <p id="king-card-rule">
+            Drag a card from the circle to reveal the rule.
+          </p>
+          <p id="king-count-text">Kings drawn: 0 / 4</p>
+        </div>
+
+        <button id="king-change-pack-btn" class="secondary-btn game-action-btn">
+          Change Pack
+        </button>
+
+        <button id="king-back-games-btn" class="secondary-btn game-action-btn">
+          Back to Games
+        </button>
+      </section>
+
+      <section id="king-cup-end-screen" class="screen">
+        <div class="top-bar">
+          <h2>King's Cup</h2>
+        </div>
+
+        <div class="card end-card">
+          <p id="king-end-title" class="end-title">Final King! 👑</p>
+          <p id="king-end-message">The King’s Cup has been claimed.</p>
+          <p id="king-end-detail">
+            Whoever pulled the 4th King drinks the King’s Cup.
+          </p>
+        </div>
+
+        <button id="king-play-again-btn" class="main-btn">Play Again</button>
+
+        <button
+          id="king-end-back-games-btn"
+          class="secondary-btn game-action-btn"
+        >
+          Back to Games
+        </button>
+      </section>
+    </main>
+
+    <div id="help-modal" class="modal hidden">
+      <div class="modal-box">
+        <h3 id="help-title">Sip If...</h3>
+        <p id="help-text">
+          Read the card out loud. Anyone the statement applies to takes the
+          number of sips shown on the card.
+        </p>
+
+        <button id="close-help-btn" class="main-btn">Got it</button>
+      </div>
+    </div>
+
+    <div id="game-alert-modal" class="modal hidden">
+      <div class="modal-box">
+        <h3 id="game-alert-title">Oops!</h3>
+        <p id="game-alert-text">Something went wrong.</p>
+
+        <button id="close-game-alert-btn" class="main-btn">Got it</button>
+      </div>
+    </div>
+
+    <div id="leave-imposter-modal" class="modal hidden">
+      <div class="modal-box">
+        <h3>Leave Imposter?</h3>
+        <p>
+          Are you sure you want to leave? The imposter hasn’t been found yet!
+        </p>
+
+        <button id="stay-imposter-btn" class="main-btn">Stay in Game</button>
+        <button id="leave-imposter-btn" class="secondary-btn">
+          Leave Game
+        </button>
+      </div>
+    </div>
+
+    <div id="settings-modal" class="modal hidden">
+      <div class="modal-box settings-modal-box">
+        <div class="settings-modal-header">
+          <h3 id="settings-title">Settings</h3>
+
+          <button
+            id="close-settings-btn"
+            class="settings-close-btn"
+            aria-label="Close settings"
+          >
+            ×
+          </button>
+        </div>
+
+        <p id="settings-description" class="settings-description">
+          Customise your game experience.
+        </p>
+
+        <div class="settings-row">
+          <div>
+            <span id="sound-label" class="settings-label">Sound</span>
+            <small id="sound-description">Button taps and game effects</small>
+          </div>
+
+          <button id="sound-toggle-btn" class="toggle-btn active">ON</button>
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <span id="vibration-label" class="settings-label">Vibration</span>
+            <small id="vibration-description"
+              >Phone haptics for game moments</small
+            >
+          </div>
+
+          <button id="vibration-toggle-btn" class="toggle-btn active">
+            ON
+          </button>
+        </div>
+
+        <div class="settings-row settings-language-row">
+          <div>
+            <span id="language-label" class="settings-label">Language</span>
+            <small id="language-description"
+              >More full translations coming later</small
+            >
+          </div>
+
+          <div class="select-wrap">
+            <select id="language-select" class="settings-select">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="it">Italiano</option>
+              <option value="pt">Português</option>
+              <option value="nl">Nederlands</option>
+              <option value="pl">Polski</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const homeScreen = document.getElementById("home-screen");
+        const modeScreen = document.getElementById("mode-screen");
+
+        setTimeout(() => {
+          homeScreen.classList.add("splash-leaving");
+
+          setTimeout(() => {
+            homeScreen.classList.remove("active");
+            homeScreen.classList.remove("splash-leaving");
+            modeScreen.classList.add("active");
+          }, 350);
+        }, 2200);
+      });
+    </script>
+
+    <script src="cards.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./service-worker.js");
+        });
+      }
+    </script>
+  </body>
+</html>
