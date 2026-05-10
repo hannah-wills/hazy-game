@@ -972,9 +972,17 @@ settingsBtn.addEventListener("click", openSettings);
 
 closeSettingsBtn.addEventListener("click", closeSettings);
 
+closeGameAlertBtn.addEventListener("click", closeGameAlert);
+
 settingsModal.addEventListener("click", event => {
   if (event.target === settingsModal) {
     closeSettings();
+  }
+});
+
+gameAlertModal.addEventListener("click", event => {
+  if (event.target === gameAlertModal) {
+    closeGameAlert();
   }
 });
 
