@@ -195,6 +195,18 @@
               <span>Drag cards and follow the rule</span>
             </div>
           </button>
+
+          <button class="mode-card game-tile" data-mode="redFlagAuction">
+            <img
+              src="assets/images/red-flag.png"
+              alt="Red Flag"
+              class="game-tile-img"
+            />
+            <div class="game-tile-text">
+              <strong>Red Flag</strong>
+              <span>Swipe before the red flag is revealed</span>
+            </div>
+          </button>
         </div>
       </section>
 
@@ -276,43 +288,43 @@
             </div>
           </button>
 
-          <button class="pack-card normal-pack locked" data-pack="girlsNight">
+          <button class="pack-card normal-pack" data-pack="girlsNight">
             <img src="assets/images/girls-night-pack.png" alt="Girls Night" />
             <div>
               <strong>Girls Night</strong>
-              <span>Coming soon</span>
+              <span>For the group chat girls</span>
             </div>
           </button>
 
-          <button class="pack-card normal-pack locked" data-pack="couples">
+          <button class="pack-card normal-pack" data-pack="couples">
             <img src="assets/images/couples-pack.png" alt="Couples" />
             <div>
               <strong>Couples</strong>
-              <span>Coming soon</span>
+              <span>Relationship and date night prompts</span>
             </div>
           </button>
 
-          <button class="pack-card normal-pack locked" data-pack="chaos">
+          <button class="pack-card normal-pack" data-pack="chaos">
             <img src="assets/images/chaos-pack.png" alt="Chaos" />
             <div>
               <strong>Chaos</strong>
-              <span>Coming soon</span>
+              <span>Messier, louder party prompts</span>
             </div>
           </button>
 
-          <button class="pack-card normal-pack locked" data-pack="bestFriends">
+          <button class="pack-card normal-pack" data-pack="bestFriends">
             <img src="assets/images/best-friends-pack.png" alt="Best Friends" />
             <div>
               <strong>Best Friends</strong>
-              <span>Coming soon</span>
+              <span>Inside jokes and friendship tests</span>
             </div>
           </button>
 
-          <button class="pack-card normal-pack locked" data-pack="houseParty">
+          <button class="pack-card normal-pack" data-pack="houseParty">
             <img src="assets/images/house-party-pack.png" alt="House Party" />
             <div>
               <strong>House Party</strong>
-              <span>Coming soon</span>
+              <span>Pres, music and party energy</span>
             </div>
           </button>
 
@@ -576,6 +588,84 @@
         </button>
 
         <button id="wyr-back-games-btn" class="secondary-btn game-action-btn">
+          Back to Games
+        </button>
+      </section>
+
+      <section id="red-flag-screen" class="screen">
+        <div class="top-bar">
+          <button id="red-flag-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>Red Flag</h2>
+        </div>
+
+        <p class="tagline" id="red-flag-tagline">
+          Swipe based on the profile. The red flag comes after.
+        </p>
+
+        <div id="red-flag-card" class="red-flag-profile-card">
+          <div class="red-flag-avatar">
+            <div class="red-flag-avatar-glow"></div>
+            <div class="red-flag-avatar-person">?</div>
+          </div>
+
+          <div class="red-flag-profile-info">
+            <h3 id="red-flag-name">Profile Name</h3>
+            <p id="red-flag-age" class="red-flag-age">Age: 25</p>
+
+            <div id="red-flag-traits" class="red-flag-traits">
+              <span id="red-flag-trait-1">Trait</span>
+              <span id="red-flag-trait-2">Trait</span>
+              <span id="red-flag-trait-3">Trait</span>
+            </div>
+          </div>
+
+          <div id="red-flag-reveal-box" class="red-flag-reveal-box hidden">
+            <span class="red-flag-label">RED FLAG</span>
+            <p id="red-flag-text">Red flag goes here.</p>
+          </div>
+        </div>
+
+        <div id="red-flag-vote-area" class="red-flag-vote-area">
+          <p id="red-flag-current-player" class="red-flag-current-player">
+            Would you swipe?
+          </p>
+
+          <div class="red-flag-buttons">
+            <button
+              id="red-flag-left-btn"
+              class="red-flag-swipe-btn red-flag-left"
+            >
+              ✕
+            </button>
+
+            <button
+              id="red-flag-right-btn"
+              class="red-flag-swipe-btn red-flag-right"
+            >
+              ♥
+            </button>
+          </div>
+        </div>
+
+        <p id="red-flag-result" class="red-flag-result"></p>
+
+        <button id="red-flag-next-btn" class="main-btn hidden">
+          Next Profile
+        </button>
+
+        <button
+          id="red-flag-change-pack-btn"
+          class="secondary-btn game-action-btn"
+        >
+          Change Pack
+        </button>
+
+        <button
+          id="red-flag-back-games-btn"
+          class="secondary-btn game-action-btn"
+        >
           Back to Games
         </button>
       </section>

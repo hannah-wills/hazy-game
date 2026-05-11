@@ -1019,13 +1019,22 @@ h2 {
 }
 
 #intro-text {
-  max-width: 90%;
+  max-width: 92%;
   margin: 0 auto;
-  font-size: 19px;
-  line-height: 1.55;
+  font-size: 20px;
+  line-height: 1.35;
   font-weight: 800;
   letter-spacing: 0.2px;
-  white-space: pre-line;
+  white-space: normal;
+}
+
+#intro-text .intro-line {
+  display: block;
+  margin-bottom: 14px;
+}
+
+#intro-text .intro-line:last-child {
+  margin-bottom: 0;
 }
 
 #game-intro-screen .tagline {
@@ -1793,4 +1802,170 @@ h2 {
 /* Always show the coming soon box */
 #pack-screen .pack-placeholder {
   display: flex;
+}
+
+#mode-screen {
+  position: relative;
+}
+
+#mode-screen #settings-btn.settings-cog {
+  top: -82px !important;
+  right: 22px !important;
+  left: auto !important;
+}
+
+/* =====================
+   RED FLAG
+===================== */
+
+.red-flag-profile-card {
+  min-height: 430px;
+  padding: 24px;
+  margin: 24px 0 24px;
+  border-radius: 32px;
+  background: radial-gradient(
+      circle at top,
+      rgba(255, 43, 214, 0.18),
+      transparent 42%
+    ),
+    linear-gradient(180deg, rgba(47, 0, 74, 0.98), rgba(12, 0, 24, 0.98));
+  border: 2px solid rgba(255, 43, 214, 0.75);
+  box-shadow: 0 0 24px rgba(255, 43, 214, 0.42),
+    inset 0 0 26px rgba(0, 229, 255, 0.08);
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.red-flag-avatar {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 18px;
+  border-radius: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+      circle at 35% 25%,
+      rgba(255, 255, 255, 0.18),
+      transparent 28%
+    ),
+    linear-gradient(135deg, #ff2bd6, #8b5cf6, #00e5ff);
+  box-shadow: 0 8px 0 #21002f, 0 0 22px rgba(255, 43, 214, 0.5),
+    0 0 26px rgba(0, 229, 255, 0.24);
+}
+
+.red-flag-avatar span {
+  font-size: 70px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+}
+
+.red-flag-profile-info h3 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.red-flag-profile-info p {
+  margin: 6px 0 18px;
+  color: #00e5ff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.red-flag-traits {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.red-flag-traits p {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.red-flag-reveal-box {
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255, 43, 214, 0.14);
+  border: 1px solid rgba(255, 43, 214, 0.65);
+  box-shadow: 0 0 18px rgba(255, 43, 214, 0.25);
+}
+
+.red-flag-reveal-box span {
+  display: block;
+  margin-bottom: 8px;
+  color: #ff6acb;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.red-flag-reveal-box p {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.red-flag-actions {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin: 18px 0 18px;
+}
+
+.red-flag-swipe-btn {
+  width: 76px;
+  height: 76px;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 38px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 7px 0 #1a002a, 0 14px 22px rgba(0, 0, 0, 0.34);
+}
+
+.red-flag-no {
+  background: linear-gradient(180deg, #ff4f8b, #d8185c);
+}
+
+.red-flag-yes {
+  background: linear-gradient(180deg, #12ffb5, #00b884);
+}
+
+.red-flag-swipe-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.red-flag-result {
+  min-height: 48px;
+  margin: 10px 0 16px;
+  color: #00e5ff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.25;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
+}
+
+.red-flag-profile-card.swipe-left {
+  transform: rotate(-2deg) translateX(-8px);
+  box-shadow: 0 0 24px rgba(255, 79, 139, 0.5),
+    inset 0 0 26px rgba(0, 229, 255, 0.08);
+}
+
+.red-flag-profile-card.swipe-right {
+  transform: rotate(2deg) translateX(8px);
+  box-shadow: 0 0 24px rgba(18, 255, 181, 0.5),
+    inset 0 0 26px rgba(0, 229, 255, 0.08);
 }

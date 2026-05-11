@@ -126,6 +126,23 @@ const wyrNextBtn = document.getElementById("wyr-next-btn");
 const wyrChangePackBtn = document.getElementById("wyr-change-pack-btn");
 const wyrBackGamesBtn = document.getElementById("wyr-back-games-btn");
 
+const redFlagScreen = document.getElementById("red-flag-screen");
+const redFlagBackBtn = document.getElementById("red-flag-back-btn");
+const redFlagCard = document.getElementById("red-flag-card");
+const redFlagName = document.getElementById("red-flag-name");
+const redFlagAge = document.getElementById("red-flag-age");
+const redFlagTrait1 = document.getElementById("red-flag-trait-1");
+const redFlagTrait2 = document.getElementById("red-flag-trait-2");
+const redFlagTrait3 = document.getElementById("red-flag-trait-3");
+const redFlagRevealBox = document.getElementById("red-flag-reveal-box");
+const redFlagText = document.getElementById("red-flag-text");
+const redFlagLeftBtn = document.getElementById("red-flag-left-btn");
+const redFlagRightBtn = document.getElementById("red-flag-right-btn");
+const redFlagResult = document.getElementById("red-flag-result");
+const redFlagNextBtn = document.getElementById("red-flag-next-btn");
+const redFlagChangePackBtn = document.getElementById("red-flag-change-pack-btn");
+const redFlagBackGamesBtn = document.getElementById("red-flag-back-games-btn");
+
 const wheelScreen = document.getElementById("dare-wheel-screen");
 const wheelBackBtn = document.getElementById("wheel-back-btn");
 const wheelBtn = document.getElementById("spin-wheel-btn");
@@ -201,6 +218,8 @@ let kingsDrawn = 0;
 let kingCupGameActive = false;
 let pendingKingCupLeaveScreen = null;
 let activeLeaveGame = "";
+let redFlagRecentCards = [];
+let currentRedFlagProfile = null;
 
 function resetGameState(options = {}) {
   clearInterval(discussionInterval);
@@ -226,6 +245,15 @@ function resetGameState(options = {}) {
   option2Btn.style.display = "none";
   wyrNextBtn.style.display = "block";
   wyrNextBtn.textContent = "Next Question";
+
+  redFlagRecentCards = [];
+  currentRedFlagProfile = null;
+  
+  if (redFlagResult) redFlagResult.textContent = "";
+  if (redFlagRevealBox) redFlagRevealBox.classList.add("hidden");
+  if (redFlagNextBtn) redFlagNextBtn.classList.add("hidden");
+  if (redFlagLeftBtn) redFlagLeftBtn.disabled = false;
+  if (redFlagRightBtn) redFlagRightBtn.disabled = false;
 
   wheelRotation = 0;
   wheelResult.textContent = "";
@@ -258,7 +286,8 @@ const modeNames = {
   wouldYouRather: "Would You Rather",
   dareRoulette: "Dare Roulette",
   kingCup: "King's Cup",
-  knowMeBetter: "Know Me Better"
+  knowMeBetter: "Know Me Better",
+  redFlagAuction: "Red Flag",
 };
 
 function showScreen(screenToShow) {
@@ -277,7 +306,8 @@ function showScreen(screenToShow) {
     wyrScreen,
     wheelScreen,
     kingCupScreen,
-    kingEndScreen
+    kingEndScreen,
+    redFlagScreen
   ];
 
   screens.forEach(screen => {
@@ -553,6 +583,12 @@ const languageText = {
   introKnowMeBetter:
   "The named player secretly thinks of their answer.\nEveryone else guesses what they would say.\nWrong guesses drink the sips shown.",
 
+  introRedFlagAuction:
+  "Look at the profile.\nSwipe left if you would reject them.\nSwipe right if you would risk it.\nThen reveal the red flag.",
+
+helpRedFlagAuction:
+  "Look at the profile and decide if you would swipe left or right. Once you choose, the red flag is revealed. If you ignored the red flag, you drink.",
+
   },
 
   es: {},
@@ -626,7 +662,12 @@ function applySettingsToUI() {
 
   if (!wheelBtn.disabled && wheelBtn.textContent !== getText("spinAgain")) {
     wheelBtn.textContent = getText("spin");
+
   }
+
+  if (redFlagNextBtn) redFlagNextBtn.textContent = "Next Profile";
+  if (redFlagChangePackBtn) redFlagChangePackBtn.textContent = getText("changePack");
+  if (redFlagBackGamesBtn) redFlagBackGamesBtn.textContent = getText("backToGames");
 }
 
 function openSettings() {
@@ -787,28 +828,9 @@ function getRandomPlayer() {
   return randomPlayer;
 }
 
-function getRandomDifferentPlayer(...avoidNames) {
-  const blockedNames = avoidNames
-    .filter(Boolean)
-    .map(name => String(name).toLowerCase());
-
-  const availablePlayers = players.filter(player => {
-    return !blockedNames.includes(player.toLowerCase());
-  });
-
-  const playerPool = availablePlayers.length > 0 ? availablePlayers : players;
-
-  if (playerPool.length === 0) {
-    return "someone";
-  }
-
-  const randomIndex = Math.floor(Math.random() * playerPool.length);
-  return playerPool[randomIndex];
-}
-
 function escapeHTML(value) {
   const div = document.createElement("div");
-  div.textContent = value;
+  div.textContent = String(value);
   return div.innerHTML;
 }
 
@@ -816,14 +838,45 @@ function highlightedPlayerHTML(name) {
   return `<span class="player-highlight">${escapeHTML(name)}</span>`;
 }
 
+function getRandomDifferentPlayer(...avoidNames) {
+  const blockedNames = avoidNames
+    .filter(Boolean)
+    .map(name => String(name).trim().toLowerCase());
+
+  const availablePlayers = players.filter(player => {
+    return !blockedNames.includes(String(player).trim().toLowerCase());
+  });
+
+  if (availablePlayers.length === 0) {
+    return "someone";
+  }
+
+  const randomIndex = Math.floor(Math.random() * availablePlayers.length);
+  return availablePlayers[randomIndex];
+}
+
 function getPersonalisedPromptHTML(prompt, avoidName = "") {
-  const playerOne = getRandomDifferentPlayer(avoidName);
-  const playerTwo = getRandomDifferentPlayer(avoidName, playerOne);
+  const safePrompt = String(prompt || "");
 
-  let html = escapeHTML(prompt);
+  const usedNames = [];
 
-  html = html.split("{player2}").join(highlightedPlayerHTML(playerTwo));
-  html = html.split("{player}").join(highlightedPlayerHTML(playerOne));
+  if (avoidName) {
+    usedNames.push(avoidName);
+  }
+
+  let html = escapeHTML(safePrompt);
+
+  html = html.replace(/\{player2\}/g, () => {
+    const player = getRandomDifferentPlayer(...usedNames);
+    usedNames.push(player);
+    return highlightedPlayerHTML(player);
+  });
+
+  html = html.replace(/\{player\}/g, () => {
+    const player = getRandomDifferentPlayer(...usedNames);
+    usedNames.push(player);
+    return highlightedPlayerHTML(player);
+  });
 
   return html;
 }
@@ -844,9 +897,8 @@ function getRandomCard() {
   const selectedCards = gameCards[currentMode]?.[currentPack];
 
   if (!selectedCards || selectedCards.length === 0) {
-    sipAmount.style.display = "none";
-    playerName.style.display = "none";
-    cardText.textContent = "No cards found for this pack.";
+    wyrPlayerName.style.display = "none";
+    wyrQuestionText.textContent = getText("noCards");
     return;
   }
 
@@ -891,6 +943,71 @@ function getRandomCard() {
 
   showPersonalisedPrompt(cardText, chosenCard, currentCardPlayer);
   animateCard(mainCard);
+}
+
+function setupRedFlagProfile() {
+  const selectedProfiles = gameCards.redFlagAuction?.[currentPack];
+
+  if (!selectedProfiles || selectedProfiles.length === 0) {
+    showGameAlert(getText("comingSoonTitle"), getText("noCards"));
+    return;
+  }
+
+  let chosenProfile;
+
+  do {
+    const randomIndex = Math.floor(Math.random() * selectedProfiles.length);
+    chosenProfile = selectedProfiles[randomIndex];
+  } while (
+    redFlagRecentCards.includes(chosenProfile) &&
+    selectedProfiles.length > redFlagRecentCards.length
+  );
+
+  redFlagRecentCards.push(chosenProfile);
+
+  if (redFlagRecentCards.length > 6) {
+    redFlagRecentCards.shift();
+  }
+
+  currentRedFlagProfile = chosenProfile;
+
+  redFlagName.textContent = chosenProfile.name;
+  redFlagAge.textContent = `Age: ${chosenProfile.age}`;
+  redFlagTrait1.textContent = chosenProfile.traits[0];
+  redFlagTrait2.textContent = chosenProfile.traits[1];
+  redFlagTrait3.textContent = chosenProfile.traits[2];
+
+  redFlagText.textContent = chosenProfile.redFlag;
+  redFlagRevealBox.classList.add("hidden");
+  redFlagResult.textContent = "";
+
+  redFlagLeftBtn.disabled = false;
+  redFlagRightBtn.disabled = false;
+  redFlagNextBtn.classList.add("hidden");
+
+  redFlagCard.classList.remove("swipe-left", "swipe-right", "card-change");
+  void redFlagCard.offsetWidth;
+  redFlagCard.classList.add("card-change");
+}
+
+function handleRedFlagSwipe(choice) {
+  if (!currentRedFlagProfile) return;
+
+  redFlagLeftBtn.disabled = true;
+  redFlagRightBtn.disabled = true;
+
+  redFlagRevealBox.classList.remove("hidden");
+
+  if (choice === "right") {
+    redFlagCard.classList.add("swipe-right");
+    redFlagResult.textContent = "You ignored the red flag. Drink 2 sips.";
+  } else {
+    redFlagCard.classList.add("swipe-left");
+    redFlagResult.textContent = "Safe choice. Give 1 sip to someone who would have swiped right.";
+  }
+
+  redFlagNextBtn.classList.remove("hidden");
+  resultFeedback();
 }
 
 function setupTruthDarePlayer() {
@@ -1033,10 +1150,16 @@ function showGameIntro() {
     wouldYouRather: getText("introWouldYouRather"),
     dareRoulette: getText("introDareRoulette"),
     kingCup: getText("introKingCup"),
-knowMeBetter: getText("introKnowMeBetter")
+    knowMeBetter: getText("introKnowMeBetter"),
+    redFlagAuction: getText("introRedFlagAuction")
   };
 
-  introText.textContent = introTextByMode[currentMode] || "";
+  const introCopy = introTextByMode[currentMode] || "";
+
+  introText.innerHTML = introCopy
+    .split("\n")
+    .map(line => `<span class="intro-line">${line}</span>`)
+    .join("");
 
   introStartBtn.textContent = getText("startGame");
 
@@ -1058,6 +1181,12 @@ function startGameFromIntro() {
   if (currentMode === "wouldYouRather") {
     setupWYRPlayer();
     showScreen(wyrScreen);
+    return;
+  }
+
+  if (currentMode === "redFlagAuction") {
+    setupRedFlagProfile();
+    showScreen(redFlagScreen);
     return;
   }
 
@@ -1318,7 +1447,7 @@ wheelBtn.addEventListener("click", () => {
 
   wheelBtn.disabled = true;
   wheelBtn.textContent = "Spinning...";
-  wheelResult.textContent = "Spinning...";
+  wheelResult.textContent = "";
 
   const chosenIndex = Math.floor(Math.random() * players.length);
   const chosenPlayer = players[chosenIndex];
@@ -1682,7 +1811,8 @@ function openHelpModal() {
     wouldYouRather: getText("helpWouldYouRather"),
     dareRoulette: getText("helpDareRoulette"),
     knowMeBetter: getText("helpKnowMeBetter"),
-    kingCup: getText("helpKingCup")
+    kingCup: getText("helpKingCup"),
+    redFlagAuction: getText("helpRedFlagAuction")
 
   };
 
@@ -2100,6 +2230,35 @@ wyrBackGamesBtn.addEventListener("click", () => {
 
   
 });
+
+redFlagLeftBtn.addEventListener("click", () => {
+  handleRedFlagSwipe("left");
+});
+
+redFlagRightBtn.addEventListener("click", () => {
+  handleRedFlagSwipe("right");
+});
+
+redFlagNextBtn.addEventListener("click", () => {
+  setupRedFlagProfile();
+});
+
+redFlagBackBtn.addEventListener("click", () => {
+  resetGameState();
+  showScreen(packScreen);
+});
+
+redFlagChangePackBtn.addEventListener("click", () => {
+  resetGameState();
+  showScreen(packScreen);
+});
+
+redFlagBackGamesBtn.addEventListener("click", () => {
+  resetGameState({ includeImposter: true });
+  showScreen(modeScreen);
+});
+
+
 
 loadSavedPlayers();
 applySettingsToUI();

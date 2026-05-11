@@ -1332,7 +1332,7 @@ const gameCards = {
       "Would you rather only eat sweet or only eat savoury food for life?",
       "Would you rather be feared or loved?",
       "Would you rather have a private island or a private jet?",
-
+  
       "Would you rather swap phones with {player} for 10 minutes or let the group read your last message?",
       "Would you rather go on holiday with {player} or plan a party with {player2}?",
       "Would you rather let {player} choose your outfit or your next text?",
@@ -1349,7 +1349,7 @@ const gameCards = {
       "Would you rather have to copy {player}'s laugh for a week or dress like them for a week?",
       "Would you rather let {player} choose your dare or let {player2} choose your drink penalty?"
     ],
-
+  
     spicy: [
       "Would you rather kiss someone in the room or get kissed by someone blindfolded?",
       "Would you rather text your crush something embarrassing or have them text you?",
@@ -1381,7 +1381,7 @@ const gameCards = {
       "Would you rather receive a romantic surprise or plan one?",
       "Would you rather have a secret crush or a public crush?",
       "Would you rather kiss your crush or hold hands?",
-
+  
       "Would you rather have {player} choose who you flirt with or choose your pickup line?",
       "Would you rather go on a fake date with {player} or let {player2} write your dating profile?",
       "Would you rather let {player} read your last flirty text or your last deleted message?",
@@ -1398,7 +1398,7 @@ const gameCards = {
       "Would you rather be caught flirting with {player} or caught talking about them?",
       "Would you rather let {player} expose your dating type or your most chaotic crush story?"
     ],
-
+  
     girlsNight: [
       "Would you rather have a night out with no photos or have every photo be blurry?",
       "Would you rather let the group choose your outfit or your caption?",
@@ -1411,12 +1411,12 @@ const gameCards = {
       "Would you rather go out with no bag or no mirror?",
       "Would you rather have a private story leak or send a message to the wrong chat?",
       "Would you rather have {player} pick your outfit or write your next text?",
-      "Would you rather go on holiday with {player} or have {player} plan your birthday?",
+      "Would you rather go on holiday with {player} or have {player2} plan your birthday?",
       "Would you rather let {player} post a photo of you or choose your pose?",
       "Would you rather have {player} give you advice or tell you the brutal truth?",
       "Would you rather share a wardrobe with {player} or share a camera roll?"
     ],
-
+  
     couples: [
       "Would you rather plan every date or never plan any date?",
       "Would you rather always choose the film or always choose the food?",
@@ -1428,13 +1428,13 @@ const gameCards = {
       "Would you rather have a romantic picnic or a cosy night in?",
       "Would you rather forget an anniversary or forget a birthday?",
       "Would you rather be stuck on a long car journey or in a tiny hotel room together?",
-      "Would you rather go on a double date with {player} or let {player} plan your date?",
+      "Would you rather go on a double date with {player} or let {player2} plan your date?",
       "Would you rather have {player} choose your couple nickname or your date outfit?",
-      "Would you rather get relationship advice from {player} or let {player} read your last message?",
-      "Would you rather cook dinner with {player} or let {player} choose your takeaway?",
+      "Would you rather get relationship advice from {player} or let {player2} read your last message?",
+      "Would you rather cook dinner with {player} or let {player2} choose your takeaway?",
       "Would you rather have {player} write your dating profile or pick your first date location?"
     ],
-
+  
     chaos: [
       "Would you rather lose your phone or wake up with a mystery bruise?",
       "Would you rather have to explain your last message or your last photo?",
@@ -1450,9 +1450,9 @@ const gameCards = {
       "Would you rather be lost with {player} or kicked out with {player2}?",
       "Would you rather let {player} pick your dare or let {player2} pick your drink penalty?",
       "Would you rather have {player} narrate your mistakes or film your reactions?",
-      "Would you rather be responsible for {player} all night or let {player} be responsible for you?"
+      "Would you rather be responsible for {player} all night or let {player2} be responsible for you?"
     ],
-
+  
     bestFriends: [
       "Would you rather your best friend read your mind or your messages?",
       "Would you rather share clothes forever or share food forever?",
@@ -1465,12 +1465,12 @@ const gameCards = {
       "Would you rather be the advice giver or the chaos friend?",
       "Would you rather forget an inside joke or forget a night out?",
       "Would you rather trust {player} with your phone or your secrets?",
-      "Would you rather be stuck on holiday with {player} or live with {player} for a month?",
+      "Would you rather be stuck on holiday with {player} or live with {player2} for a month?",
       "Would you rather let {player} choose your outfit or your next message?",
       "Would you rather have {player} expose an inside joke or an embarrassing story?",
       "Would you rather have {player} as your emergency contact or your therapist?"
     ],
-
+  
     houseParty: [
       "Would you rather control the playlist all night or control the snacks?",
       "Would you rather be the first to arrive or the last to leave?",
@@ -1805,5 +1805,97 @@ const gameCards = {
       "What would {player} bring to make the party better?",
       "What would {player}'s party nickname be?"
     ]
-  }
+  },
+
+  redFlagAuction: {
+    classic: [
+      {
+        name: "Alex",
+        age: 25,
+        traits: ["Funny", "Loyal", "Great cook"],
+        redFlag: "Texts 'you up?' at 9am."
+      },
+      {
+        name: "Jamie",
+        age: 27,
+        traits: ["Adventurous", "Good listener", "Always pays for snacks"],
+        redFlag: "Still says their ex is their best friend."
+      },
+      {
+        name: "Taylor",
+        age: 24,
+        traits: ["Kind", "Confident", "Has amazing music taste"],
+        redFlag: "Claps when the plane lands."
+      },
+      {
+        name: "Morgan",
+        age: 26,
+        traits: ["Romantic", "Funny", "Makes great plans"],
+        redFlag: "Takes 3-5 business days to reply."
+      },
+      {
+        name: "Casey",
+        age: 28,
+        traits: ["Cute smile", "Loves dogs", "Makes you laugh"],
+        redFlag: "Calls themselves an empath after starting drama."
+      },
+      {
+        name: "Riley",
+        age: 23,
+        traits: ["Stylish", "Spontaneous", "Great energy"],
+        redFlag: "Says 'I hate drama' but is always in it."
+      },
+      {
+        name: "Jordan",
+        age: 29,
+        traits: ["Smart", "Funny", "Knows all the best food spots"],
+        redFlag: "Still uses Snapchat as their main form of communication."
+      },
+      {
+        name: "Sam",
+        age: 25,
+        traits: ["Charming", "Easy to talk to", "Good with family"],
+        redFlag: "Their phone is always face down."
+      }
+    ],
+  
+    spicy: [
+      {
+        name: "Blake",
+        age: 26,
+        traits: ["Flirty", "Confident", "Looks good in every photo"],
+        redFlag: "Has a 'close friends' story with 200 people in it."
+      },
+      {
+        name: "Sky",
+        age: 24,
+        traits: ["Great kisser energy", "Funny", "Good at texting"],
+        redFlag: "Sends risky texts then says 'wrong person'."
+      },
+      {
+        name: "Phoenix",
+        age: 27,
+        traits: ["Mysterious", "Hot", "Knows exactly what to say"],
+        redFlag: "Never posts you but posts their food."
+      },
+      {
+        name: "River",
+        age: 25,
+        traits: ["Smooth talker", "Great outfits", "Exciting"],
+        redFlag: "Says 'I'm not looking for anything serious' after 4 dates."
+      },
+      {
+        name: "Harley",
+        age: 28,
+        traits: ["Bold", "Funny", "Massive flirt"],
+        redFlag: "Has everyone saved under emojis."
+      },
+      {
+        name: "Nova",
+        age: 23,
+        traits: ["Pretty", "Chaotic", "Makes every night interesting"],
+        redFlag: "Still has dating apps 'just for fun'."
+      }
+    ]
+  },
 };
