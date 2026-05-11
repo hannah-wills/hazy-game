@@ -1819,153 +1819,237 @@ h2 {
 ===================== */
 
 .red-flag-profile-card {
-  min-height: 430px;
-  padding: 24px;
-  margin: 24px 0 24px;
-  border-radius: 32px;
-  background: radial-gradient(
-      circle at top,
-      rgba(255, 43, 214, 0.18),
-      transparent 42%
-    ),
-    linear-gradient(180deg, rgba(47, 0, 74, 0.98), rgba(12, 0, 24, 0.98));
-  border: 2px solid rgba(255, 43, 214, 0.75);
-  box-shadow: 0 0 24px rgba(255, 43, 214, 0.42),
-    inset 0 0 26px rgba(0, 229, 255, 0.08);
+  width: min(100%, 340px);
+  margin: 0 auto 18px;
+  padding: 22px 18px 18px;
+  border-radius: 28px;
+  border: 2px solid #ff2bd6;
+  background: rgba(34, 0, 58, 0.92);
+  box-shadow: 0 0 18px rgba(255, 43, 214, 0.35),
+    0 0 45px rgba(150, 0, 255, 0.18);
   text-align: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+  touch-action: none;
+}
+
+.red-flag-profile-card.dragging {
+  transition: none;
+}
+
+.red-flag-profile-card.swipe-left {
+  transform: translateX(-140px) rotate(-12deg);
+  opacity: 0.5;
+}
+
+.red-flag-profile-card.swipe-right {
+  transform: translateX(140px) rotate(12deg);
+  opacity: 0.5;
 }
 
 .red-flag-avatar {
-  width: 150px;
-  height: 150px;
-  margin: 0 auto 18px;
-  border-radius: 32px;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ff44d6, #6f45ff 55%, #18d8ff);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(
-      circle at 35% 25%,
-      rgba(255, 255, 255, 0.18),
-      transparent 28%
-    ),
-    linear-gradient(135deg, #ff2bd6, #8b5cf6, #00e5ff);
-  box-shadow: 0 8px 0 #21002f, 0 0 22px rgba(255, 43, 214, 0.5),
-    0 0 26px rgba(0, 229, 255, 0.24);
+  box-shadow: 0 0 20px rgba(173, 73, 255, 0.45);
 }
 
-.red-flag-avatar span {
-  font-size: 70px;
-  font-weight: 900;
-  color: white;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+.red-flag-avatar-person {
+  position: relative;
+  width: 52px;
+  height: 58px;
+}
+
+.red-flag-avatar-person::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.45);
+}
+
+.red-flag-avatar-person::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 28px;
+  border-radius: 18px 18px 10px 10px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
 }
 
 .red-flag-profile-info h3 {
-  margin: 0;
-  font-size: 30px;
-  font-weight: 900;
+  margin: 0 0 6px;
+  font-size: 2rem;
+  font-weight: 800;
 }
 
-.red-flag-profile-info p {
-  margin: 6px 0 18px;
-  color: #00e5ff;
-  font-size: 15px;
+.red-flag-age {
+  margin: 0 0 14px;
+  color: #18d8ff;
   font-weight: 800;
-  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .red-flag-traits {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  margin-bottom: 18px;
 }
 
-.red-flag-traits p {
-  margin: 0;
-  padding: 12px 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.09);
-  border: 1px solid rgba(0, 229, 255, 0.18);
-  font-size: 17px;
-  font-weight: 800;
+.red-flag-traits span {
+  font-size: 1.1rem;
 }
 
 .red-flag-reveal-box {
-  padding: 16px;
-  border-radius: 22px;
-  background: rgba(255, 43, 214, 0.14);
-  border: 1px solid rgba(255, 43, 214, 0.65);
-  box-shadow: 0 0 18px rgba(255, 43, 214, 0.25);
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 43, 214, 0.12);
+  border: 1px solid rgba(255, 43, 214, 0.4);
 }
 
-.red-flag-reveal-box span {
-  display: block;
+.red-flag-label {
+  display: inline-block;
   margin-bottom: 8px;
-  color: #ff6acb;
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 2px;
+  color: #ff5db9;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
-.red-flag-reveal-box p {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 1.25;
-}
-
-.red-flag-actions {
+.red-flag-buttons {
   display: flex;
   justify-content: center;
-  gap: 28px;
-  margin: 18px 0 18px;
+  gap: 18px;
+  margin: 18px 0;
 }
 
 .red-flag-swipe-btn {
-  width: 76px;
-  height: 76px;
+  width: 74px;
+  height: 74px;
   border: none;
   border-radius: 50%;
-  color: white;
-  font-size: 38px;
-  font-weight: 900;
+  font-size: 2rem;
+  font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 7px 0 #1a002a, 0 14px 22px rgba(0, 0, 0, 0.34);
+  color: white;
+  background: #2b0a46;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.08);
 }
 
-.red-flag-no {
-  background: linear-gradient(180deg, #ff4f8b, #d8185c);
+.red-flag-left {
+  color: #ff6ea8;
+  box-shadow: 0 0 16px rgba(255, 110, 168, 0.28);
 }
 
-.red-flag-yes {
-  background: linear-gradient(180deg, #12ffb5, #00b884);
+.red-flag-right {
+  color: #18d8ff;
+  box-shadow: 0 0 16px rgba(24, 216, 255, 0.28);
 }
 
-.red-flag-swipe-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
+.red-flag-current-player {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
-.red-flag-result {
-  min-height: 48px;
-  margin: 10px 0 16px;
+/* RED FLAG RESULT BOX */
+
+.red-flag-result-area {
+  display: block;
+  width: min(100%, 340px);
+  margin: 20px auto 18px;
+  padding: 18px 18px 20px;
+
+  border-radius: 24px;
+  border: 2px solid rgba(0, 229, 255, 0.85);
+
+  background: radial-gradient(
+      circle at top left,
+      rgba(255, 43, 214, 0.35),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(0, 229, 255, 0.22),
+      transparent 38%
+    ),
+    rgba(34, 0, 58, 0.94);
+
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.45),
+    0 0 34px rgba(255, 43, 214, 0.35), inset 0 0 22px rgba(255, 255, 255, 0.06);
+
+  animation: redFlagResultPop 0.25s ease;
+}
+
+.red-flag-result-area.hidden {
+  display: none !important;
+}
+
+#red-flag-result-title {
+  margin: 0 0 10px;
   color: #00e5ff;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.9), 0 0 14px rgba(255, 43, 214, 0.45);
+}
+
+#red-flag-result-text {
+  margin: 0;
+  color: #ffffff;
   font-size: 20px;
   font-weight: 900;
   line-height: 1.25;
-  text-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
+  text-align: center;
+  text-shadow: 0 0 8px rgba(255, 43, 214, 0.8), 0 0 14px rgba(0, 229, 255, 0.35);
 }
 
-.red-flag-profile-card.swipe-left {
-  transform: rotate(-2deg) translateX(-8px);
-  box-shadow: 0 0 24px rgba(255, 79, 139, 0.5),
-    inset 0 0 26px rgba(0, 229, 255, 0.08);
+@keyframes redFlagResultPop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-.red-flag-profile-card.swipe-right {
-  transform: rotate(2deg) translateX(8px);
-  box-shadow: 0 0 24px rgba(18, 255, 181, 0.5),
-    inset 0 0 26px rgba(0, 229, 255, 0.08);
+.hidden {
+  display: none !important;
+}
+
+.players-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.players-pill-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.65))
+    drop-shadow(0 0 8px rgba(255, 43, 214, 0.45));
+}
+
+.players-pill span {
+  display: inline-block;
 }

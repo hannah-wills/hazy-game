@@ -84,7 +84,12 @@
         <p class="tagline menu-tagline">Pick the vibes for tonight.</p>
 
         <button id="open-players-btn" class="players-pill">
-          👥 Players (0)
+          <img
+            src="assets/images/players-icon.png"
+            alt=""
+            class="players-pill-icon"
+          />
+          <span id="open-players-text">Players (0)</span>
         </button>
 
         <div class="mode-grid">
@@ -267,7 +272,12 @@
         <p class="tagline">Pick how chaotic you want it.</p>
 
         <button id="pack-players-btn" class="players-pill">
-          👥 Players (0)
+          <img
+            src="assets/images/players-icon.png"
+            alt=""
+            class="players-pill-icon"
+          />
+          <span id="pack-players-text">Players (0)</span>
         </button>
 
         <div class="mode-grid">
@@ -601,13 +611,13 @@
         </div>
 
         <p class="tagline" id="red-flag-tagline">
-          Swipe based on the profile. The red flag comes after.
+          Pass the phone and swipe privately.
         </p>
 
         <div id="red-flag-card" class="red-flag-profile-card">
           <div class="red-flag-avatar">
             <div class="red-flag-avatar-glow"></div>
-            <div class="red-flag-avatar-person">?</div>
+            <div class="red-flag-avatar-person"></div>
           </div>
 
           <div class="red-flag-profile-info">
@@ -629,7 +639,7 @@
 
         <div id="red-flag-vote-area" class="red-flag-vote-area">
           <p id="red-flag-current-player" class="red-flag-current-player">
-            Would you swipe?
+            Player, would you swipe?
           </p>
 
           <div class="red-flag-buttons">
@@ -639,7 +649,6 @@
             >
               ✕
             </button>
-
             <button
               id="red-flag-right-btn"
               class="red-flag-swipe-btn red-flag-right"
@@ -649,17 +658,13 @@
           </div>
         </div>
 
-        <p id="red-flag-result" class="red-flag-result"></p>
+        <div id="red-flag-result-area" class="red-flag-result-area hidden">
+          <h3 id="red-flag-result-title">Result</h3>
+          <p id="red-flag-result-text">Result text goes here.</p>
+        </div>
 
         <button id="red-flag-next-btn" class="main-btn hidden">
           Next Profile
-        </button>
-
-        <button
-          id="red-flag-change-pack-btn"
-          class="secondary-btn game-action-btn"
-        >
-          Change Pack
         </button>
 
         <button

@@ -138,9 +138,9 @@ const redFlagRevealBox = document.getElementById("red-flag-reveal-box");
 const redFlagText = document.getElementById("red-flag-text");
 const redFlagLeftBtn = document.getElementById("red-flag-left-btn");
 const redFlagRightBtn = document.getElementById("red-flag-right-btn");
-const redFlagResult = document.getElementById("red-flag-result");
+const redFlagResultArea = document.getElementById("red-flag-result-area");
+const redFlagResultText = document.getElementById("red-flag-result-text");
 const redFlagNextBtn = document.getElementById("red-flag-next-btn");
-const redFlagChangePackBtn = document.getElementById("red-flag-change-pack-btn");
 const redFlagBackGamesBtn = document.getElementById("red-flag-back-games-btn");
 
 const wheelScreen = document.getElementById("dare-wheel-screen");
@@ -221,6 +221,29 @@ let activeLeaveGame = "";
 let redFlagRecentCards = [];
 let currentRedFlagProfile = null;
 
+const redFlagResultOutcomes = {
+  left: [
+    "Too picky? You swiped left. Take 1 sip.",
+    "You rejected them. Give 2 sips to someone who would have risked it.",
+    "Safe but savage. Take 1 sip.",
+    "You dodged the red flag. Choose someone to drink 1 sip.",
+    "You said no too fast. Take 2 sips."
+  ],
+
+  right: [
+    "You fell for the profile. Take 2 sips.",
+    "Risky choice. Take 1 sip and choose someone else to take 1.",
+    "You swiped right anyway. Take 3 sips.",
+    "No standards tonight. Take 2 sips.",
+    "You fell for the profile. Take 1 sip."
+  ]
+};
+
+function getRandomRedFlagOutcome(choice) {
+  const outcomes = redFlagResultOutcomes[choice] || redFlagResultOutcomes.right;
+  return outcomes[Math.floor(Math.random() * outcomes.length)];
+}
+
 function resetGameState(options = {}) {
   clearInterval(discussionInterval);
 
@@ -249,11 +272,17 @@ function resetGameState(options = {}) {
   redFlagRecentCards = [];
   currentRedFlagProfile = null;
   
-  if (redFlagResult) redFlagResult.textContent = "";
+  if (redFlagResultText) redFlagResultText.textContent = "";
+  if (redFlagResultArea) redFlagResultArea.classList.add("hidden");
   if (redFlagRevealBox) redFlagRevealBox.classList.add("hidden");
   if (redFlagNextBtn) redFlagNextBtn.classList.add("hidden");
   if (redFlagLeftBtn) redFlagLeftBtn.disabled = false;
   if (redFlagRightBtn) redFlagRightBtn.disabled = false;
+  
+  if (redFlagCard) {
+    redFlagCard.classList.remove("swipe-left", "swipe-right", "dragging");
+    redFlagCard.style.transform = "";
+  }
 
   wheelRotation = 0;
   wheelResult.textContent = "";
@@ -325,8 +354,11 @@ function updatePlayerList() {
   playerList.innerHTML = "";
 
   playerCount.textContent = `${getText("playersCount")}: ${players.length}`;
-  openPlayersBtn.textContent = `◉ ${getText("players")} (${players.length})`;
-  packPlayersBtn.textContent = `◉ ${getText("players")} (${players.length})`;
+  document.getElementById("open-players-text").textContent =
+  `${getText("players")} (${players.length})`;
+
+  document.getElementById("pack-players-text").textContent =
+  `${getText("players")} (${players.length})`;
 
   localStorage.setItem("hazyPlayers", JSON.stringify(players));
 
@@ -640,8 +672,11 @@ function applySettingsToUI() {
   packScreenTitle.textContent = modeNames[currentMode] || getText("choosePack");
   launchBtn.textContent = getText("launch");
 
-  openPlayersBtn.textContent = `◉ ${getText("players")} (${players.length})`;
-  packPlayersBtn.textContent = `◉ ${getText("players")} (${players.length})`;
+  document.getElementById("open-players-text").textContent =
+  `${getText("players")} (${players.length})`;
+
+  document.getElementById("pack-players-text").textContent =
+  `${getText("players")} (${players.length})`;
 
   nextBtn.textContent = getText("nextCard");
   gameChangePackBtn.textContent = getText("changePack");
@@ -662,11 +697,10 @@ function applySettingsToUI() {
 
   if (!wheelBtn.disabled && wheelBtn.textContent !== getText("spinAgain")) {
     wheelBtn.textContent = getText("spin");
-
+ 
   }
 
   if (redFlagNextBtn) redFlagNextBtn.textContent = "Next Profile";
-  if (redFlagChangePackBtn) redFlagChangePackBtn.textContent = getText("changePack");
   if (redFlagBackGamesBtn) redFlagBackGamesBtn.textContent = getText("backToGames");
 }
 
@@ -946,7 +980,7 @@ function getRandomCard() {
 }
 
 function setupRedFlagProfile() {
-  const selectedProfiles = gameCards.redFlagAuction?.[currentPack];
+  const selectedProfiles = gameCards.redFlagAuction?.classic;
 
   if (!selectedProfiles || selectedProfiles.length === 0) {
     showGameAlert(getText("comingSoonTitle"), getText("noCards"));
@@ -976,18 +1010,25 @@ function setupRedFlagProfile() {
   redFlagTrait1.textContent = chosenProfile.traits[0];
   redFlagTrait2.textContent = chosenProfile.traits[1];
   redFlagTrait3.textContent = chosenProfile.traits[2];
-
   redFlagText.textContent = chosenProfile.redFlag;
+
   redFlagRevealBox.classList.add("hidden");
-  redFlagResult.textContent = "";
+  redFlagResultText.textContent = "";
+  redFlagResultArea.classList.add("hidden");
+  redFlagNextBtn.classList.add("hidden");
 
   redFlagLeftBtn.disabled = false;
   redFlagRightBtn.disabled = false;
-  redFlagNextBtn.classList.add("hidden");
 
-  redFlagCard.classList.remove("swipe-left", "swipe-right", "card-change");
+  redFlagCard.classList.remove("swipe-left", "swipe-right", "dragging", "card-change");
+  redFlagCard.style.transform = "";
+
   void redFlagCard.offsetWidth;
   redFlagCard.classList.add("card-change");
+
+  const currentPlayer = getRandomPlayer();
+  document.getElementById("red-flag-current-player").textContent =
+    `${currentPlayer}, would you swipe?`;
 }
 
 function handleRedFlagSwipe(choice) {
@@ -1000,14 +1041,70 @@ function handleRedFlagSwipe(choice) {
 
   if (choice === "right") {
     redFlagCard.classList.add("swipe-right");
-    redFlagResult.textContent = "You ignored the red flag. Drink 2 sips.";
   } else {
     redFlagCard.classList.add("swipe-left");
-    redFlagResult.textContent = "Safe choice. Give 1 sip to someone who would have swiped right.";
   }
 
+  redFlagResultText.textContent = getRandomRedFlagOutcome(choice);
+  redFlagResultArea.classList.remove("hidden");
   redFlagNextBtn.classList.remove("hidden");
+
   resultFeedback();
+}
+
+function addRedFlagSwipeGesture() {
+  if (!redFlagCard) return;
+
+  let isDragging = false;
+  let startX = 0;
+  let currentX = 0;
+
+  redFlagCard.addEventListener("pointerdown", event => {
+    isDragging = true;
+    startX = event.clientX;
+    currentX = 0;
+    redFlagCard.classList.add("dragging");
+    redFlagCard.setPointerCapture(event.pointerId);
+  });
+
+  redFlagCard.addEventListener("pointermove", event => {
+    if (!isDragging) return;
+
+    currentX = event.clientX - startX;
+    const rotate = currentX * 0.08;
+
+    redFlagCard.style.transform = `translateX(${currentX}px) rotate(${rotate}deg)`;
+  });
+
+  function resetCardPosition() {
+    redFlagCard.style.transform = "";
+    redFlagCard.classList.remove("dragging");
+  }
+
+  redFlagCard.addEventListener("pointerup", () => {
+    if (!isDragging) return;
+    isDragging = false;
+    redFlagCard.classList.remove("dragging");
+
+    if (currentX > 90) {
+      redFlagCard.style.transform = "";
+      handleRedFlagSwipe("right");
+      return;
+    }
+
+    if (currentX < -90) {
+      redFlagCard.style.transform = "";
+      handleRedFlagSwipe("left");
+      return;
+    }
+
+    resetCardPosition();
+  });
+
+  redFlagCard.addEventListener("pointercancel", () => {
+    isDragging = false;
+    resetCardPosition();
+  });
 }
 
 function setupTruthDarePlayer() {
@@ -1266,6 +1363,11 @@ introStartBtn.addEventListener("click", () => {
 });
 
 introBackBtn.addEventListener("click", () => {
+  if (currentMode === "redFlagAuction") {
+    showScreen(modeScreen);
+    return;
+  }
+
   showScreen(packScreen);
 });
 
@@ -1300,29 +1402,25 @@ modeCards.forEach(card => {
 
     currentMode = card.dataset.mode;
     currentPack = "classic";
-
-    packScreenTitle.textContent = modeNames[currentMode];
-    clearPackSelection();
+    selectedPack = "classic";
 
     if (currentMode === "imposter") {
       packScreen.classList.remove("normal-pack-mode");
       packScreen.classList.add("imposter-pack-mode");
-    
       showScreen(imposterSettingsScreen);
       return;
     }
-    
+
+    if (currentMode === "redFlagAuction") {
+      showGameIntro();
+      return;
+    }
+
     packScreen.classList.remove("imposter-pack-mode");
     packScreen.classList.add("normal-pack-mode");
 
-    if (card.dataset.mode === "wouldYouRather") {
-      currentMode = "wouldYouRather";
-      currentPack = "classic";
-      packScreenTitle.textContent = "Would You Rather";
-      clearPackSelection();
-      showScreen(packScreen);
-      return;
-    }
+    packScreenTitle.textContent = modeNames[currentMode];
+    clearPackSelection();
 
     showScreen(packScreen);
   });
@@ -2245,12 +2343,7 @@ redFlagNextBtn.addEventListener("click", () => {
 
 redFlagBackBtn.addEventListener("click", () => {
   resetGameState();
-  showScreen(packScreen);
-});
-
-redFlagChangePackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  showScreen(modeScreen);
 });
 
 redFlagBackGamesBtn.addEventListener("click", () => {
@@ -2259,7 +2352,7 @@ redFlagBackGamesBtn.addEventListener("click", () => {
 });
 
 
-
+addRedFlagSwipeGesture();
 loadSavedPlayers();
 applySettingsToUI();
 

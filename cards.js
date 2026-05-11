@@ -1856,10 +1856,7 @@ const gameCards = {
         age: 25,
         traits: ["Charming", "Easy to talk to", "Good with family"],
         redFlag: "Their phone is always face down."
-      }
-    ],
-  
-    spicy: [
+      },
       {
         name: "Blake",
         age: 26,
@@ -1895,6 +1892,96 @@ const gameCards = {
         age: 23,
         traits: ["Pretty", "Chaotic", "Makes every night interesting"],
         redFlag: "Still has dating apps 'just for fun'."
+      },
+            {
+        name: "Sophie",
+        age: 22,
+        traits: ["Sweet", "Always smells good", "Great laugh"],
+        redFlag: "Says 'I'm fine' then posts a cryptic story 4 minutes later."
+      },
+      {
+        name: "Mia",
+        age: 30,
+        traits: ["Independent", "Funny", "Knows what she wants"],
+        redFlag: "Has a notes app list of everyone who has wronged her."
+      },
+      {
+        name: "Chloe",
+        age: 24,
+        traits: ["Bubbly", "Stylish", "Always hypes you up"],
+        redFlag: "Says she is low maintenance but needs 3 hours to get ready."
+      },
+      {
+        name: "Ella",
+        age: 27,
+        traits: ["Kind", "Creative", "Makes amazing playlists"],
+        redFlag: "Still checks who viewed her stories in a very serious way."
+      },
+      {
+        name: "Grace",
+        age: 31,
+        traits: ["Classy", "Good career", "Great advice"],
+        redFlag: "Says 'I don't chase' but refreshes their messages every 10 seconds."
+      },
+      {
+        name: "Lily",
+        age: 21,
+        traits: ["Cute", "Fun", "Always up for plans"],
+        redFlag: "Cancels last minute because she 'forgot she was tired'."
+      },
+      {
+        name: "Isla",
+        age: 26,
+        traits: ["Charming", "Thoughtful", "Great style"],
+        redFlag: "Calls every minor inconvenience her villain origin story."
+      },
+      {
+        name: "Ava",
+        age: 29,
+        traits: ["Confident", "Loyal", "Knows the best bars"],
+        redFlag: "Says all her exes are obsessed with her."
+      },
+      {
+        name: "Ruby",
+        age: 23,
+        traits: ["Funny", "Pretty", "Good dancer"],
+        redFlag: "Starts sentences with 'I'm not being funny but...' before being funny."
+      },
+      {
+        name: "Millie",
+        age: 25,
+        traits: ["Warm", "Easy to talk to", "Makes great coffee"],
+        redFlag: "Has a matching tattoo with someone she 'doesn't speak to anymore'."
+      },
+      {
+        name: "Freya",
+        age: 28,
+        traits: ["Adventurous", "Smart", "Always has a story"],
+        redFlag: "Says she loves travelling but only means beach clubs."
+      },
+      {
+        name: "Olivia",
+        age: 32,
+        traits: ["Elegant", "Romantic", "Great cook"],
+        redFlag: "Needs to know your birth time before the first date."
+      },
+      {
+        name: "Amelia",
+        age: 24,
+        traits: ["Sweet", "Funny", "Good with animals"],
+        redFlag: "Says 'I have a dark sense of humour' then just bullies people."
+      },
+      {
+        name: "Hannah",
+        age: 27,
+        traits: ["Reliable", "Cute smile", "Always remembers details"],
+        redFlag: "Still has every gift from every ex in a memory box."
+      },
+      {
+        name: "Maisie",
+        age: 22,
+        traits: ["Chaotic", "Fun", "Life of the party"],
+        redFlag: "Says 'one drink' and is still out at 4am on a Tuesday."
       }
     ]
   },
