@@ -257,7 +257,8 @@ const modeNames = {
   imposter: "Imposter",
   wouldYouRather: "Would You Rather",
   dareRoulette: "Dare Roulette",
-  kingCup: "King's Cup"
+  kingCup: "King's Cup",
+  knowMeBetter: "Know Me Better"
 };
 
 function showScreen(screenToShow) {
@@ -294,8 +295,8 @@ function updatePlayerList() {
   playerList.innerHTML = "";
 
   playerCount.textContent = `${getText("playersCount")}: ${players.length}`;
-  openPlayersBtn.textContent = `👥 ${getText("players")} (${players.length})`;
-  packPlayersBtn.textContent = `👥 ${getText("players")} (${players.length})`;
+  openPlayersBtn.textContent = `◉ ${getText("players")} (${players.length})`;
+  packPlayersBtn.textContent = `◉ ${getText("players")} (${players.length})`;
 
   localStorage.setItem("hazyPlayers", JSON.stringify(players));
 
@@ -458,77 +459,99 @@ const languageText = {
     gameIntroTagline: "Quick rules before you start.",
 
     introSipIf:
-      "Read the card out loud. Anyone the statement applies to drinks the number of sips shown in the corner.",
-    introMostLikely:
-      "Read the card out loud. Everyone votes for the player who fits it best. The chosen player drinks.",
-    introTruthOrDare:
-      "Pass the phone to the chosen player. They pick Truth or Dare. If they refuse, they drink.",
-    introNeverHaveIEver:
-      "Read the card out loud. Anyone who has done the statement drinks the number of sips shown in the corner.",
-    introImposter:
-      "Pass the phone around one player at a time. Keep your role secret. After everyone has seen their role, discuss and vote for the imposter.",
-    introWouldYouRather:
-      "Read the question out loud. Everyone chooses one option. The side with fewer people drinks.",
-    introDareRoulette:
-      "Spin the wheel. Whoever it lands on must complete the dare shown. If they refuse, they drink.",
-
-    helpSipIf:
-      "Read the card out loud. Anyone the statement applies to takes the number of sips shown on the card.",
-    helpMostLikely:
-      "The named player will read the card out loud and everyone votes for the player who fits it best. The chosen player drinks.",
-    helpTruthOrDare:
-      "The chosen player picks Truth or Dare. If they refuse to answer or complete it, they drink.",
-    helpNeverHaveIEver:
-      "Read the card out loud. Anyone who has done the statement takes the number of sips shown.",
-    helpImposter:
-      "One or more players are secretly imposters. Everyone else sees the same word. Discuss together, then vote for who you think the imposter is.",
-    helpWouldYouRather:
-      "Read the question out loud. Everyone chooses one of the two options. The side with fewer people drinks.",
-    helpDareRoulette:
-      "Choose a category, spin the wheel, and whoever the wheel lands on must do the dare shown. If they refuse, they must drink.",
-
-    leaveImposterTitle: "Leave Imposter?",
-    leaveImposterText:
-      "Are you sure you want to leave? The imposter hasn’t been found yet!",
-    stayInGame: "Stay in Game",
-    leaveGame: "Leave Game",
-
-    passPhoneTo: "PASS THE PHONE TO",
-    makeSureNobodyLooking: "Make sure nobody else is looking",
-    secretRole: "SECRET ROLE",
-    youAreImposter: "You are the Imposter",
-    hintLabel: "Hint",
-    categoryLabel: "Category",
-    keepThisSecret: "KEEP THIS SECRET",
-    
-    playersWin: "Players Win!",
-    imposterFound: "Imposter Found!",
-    wrongVote: "Wrong Vote!",
-    wasTheImposter: "was the imposter.",
-    wasAnImposter: "was an imposter.",
-    wasNotImposter: "was NOT an imposter.",
-    hasBeenEliminated: "has been eliminated.",
-    secretWordWas: "The secret word was:",
-    imposterLeft: "imposter left.",
-
-    dareResultMust: "must",
-
-    introKingCup:
-    "Pass the phone around. Have an empty cup to hand. Drag the top card away from the deck to reveal it. Follow the card rule. The 4th King drinks the King’s Cup.",
+    "Read the card out loud.\nAnyone it applies to drinks the sips shown in the corner.",
+  
+  introMostLikely:
+    "Read the card out loud.\nEveryone votes for the player who fits it best.\nThe chosen player drinks.",
+  
+  introTruthOrDare:
+    "Pass the phone to the chosen player.\nThey pick Truth or Dare.\nIf they refuse, they drink.",
+  
+  introNeverHaveIEver:
+    "Read the card out loud.\nAnyone who has done it drinks the sips shown in the corner.",
+  
+  introImposter:
+    "Pass the phone around one player at a time.\nKeep your role secret.\nAfter everyone has seen their role, discuss and vote for the imposter.",
+  
+  introWouldYouRather:
+    "Read the question out loud.\nEveryone chooses one option.\nThe side with fewer people drinks.",
+  
+  introDareRoulette:
+    "Spin the wheel.\nWhoever it lands on must complete the dare shown.\nIf they refuse, they drink.",
+  
+  introKingCup:
+    "Pass the phone around.\nHave an empty cup to hand.\nDrag a card from the circle to reveal it.\nFollow the rule shown.\nThe 4th King drinks the King’s Cup.",
+  
+  introKnowMeBetter:
+    "The named player secretly thinks of their answer.\nEveryone else guesses what they would say.\nWrong guesses drink the sips shown.",
+  
+  helpSipIf:
+    "Read the card out loud. Anyone the statement applies to takes the number of sips shown on the card.",
+  
+  helpMostLikely:
+    "The named player will read the card out loud and everyone votes for the player who fits it best. The chosen player drinks.",
+  
+  helpTruthOrDare:
+    "The chosen player picks Truth or Dare. If they refuse to answer or complete it, they drink.",
+  
+  helpNeverHaveIEver:
+    "Read the card out loud. Anyone who has done the statement takes the number of sips shown.",
+  
+  helpImposter:
+    "One or more players are secretly imposters. Everyone else sees the same word. Discuss together, then vote for who you think the imposter is.",
+  
+  helpWouldYouRather:
+    "Read the question out loud. Everyone chooses one of the two options. The side with fewer people drinks.",
+  
+  helpDareRoulette:
+    "Choose a category, spin the wheel, and whoever the wheel lands on must do the dare shown. If they refuse, they must drink.",
+  
+  helpKingCup:
+    "Drag any card from the circle to reveal it. Follow the rule shown. The player who pulls the 4th King drinks the King’s Cup.",
+  
+  helpKnowMeBetter:
+    "The named player thinks of their answer. Everyone else guesses what they would say. Wrong guesses drink the sips shown.",
+  
+  leaveImposterTitle: "Leave Imposter?",
+  leaveImposterText:
+    "Are you sure you want to leave? The imposter hasn’t been found yet!",
+  stayInGame: "Stay in Game",
+  leaveGame: "Leave Game",
+  
+  passPhoneTo: "PASS THE PHONE TO",
+  makeSureNobodyLooking: "Make sure nobody else is looking",
+  secretRole: "SECRET ROLE",
+  youAreImposter: "You are the Imposter",
+  hintLabel: "Hint",
+  categoryLabel: "Category",
+  keepThisSecret: "KEEP THIS SECRET",
+  
+  playersWin: "Players Win!",
+  imposterFound: "Imposter Found!",
+  wrongVote: "Wrong Vote!",
+  wasTheImposter: "was the imposter.",
+  wasAnImposter: "was an imposter.",
+  wasNotImposter: "was NOT an imposter.",
+  hasBeenEliminated: "has been eliminated.",
+  secretWordWas: "The secret word was:",
+  imposterLeft: "imposter left.",
+  
+  dareResultMust: "must",
+  
   kingCupDrag: "Drag the card to reveal your rule.",
   kingCupDrawCard: "Draw a card",
   kingCupDragInstruction: "Drag the card away from the deck.",
   kingCupKingsDrawn: "Kings drawn",
   kingCupDeckEmpty: "Deck finished!",
-
+  
   playAgain: "Play Again",
+  
+  kingCupEndTitle: "Final King! 👑",
+  kingCupEndMessage: "The King’s Cup has been claimed.",
+  kingCupEndDetail: "Whoever pulled the 4th King drinks the King’s Cup.",
 
-helpKingCup:
-  "Drag any card from the circle to reveal it. Follow the rule shown. The player who pulls the 4th King drinks the King’s Cup.",
-
-kingCupEndTitle: "Final King! 👑",
-kingCupEndMessage: "The King’s Cup has been claimed.",
-kingCupEndDetail: "Whoever pulled the 4th King drinks the King’s Cup."
+  introKnowMeBetter:
+  "The named player secretly thinks of their answer.\nEveryone else guesses what they would say.\nWrong guesses drink the sips shown.",
 
   },
 
@@ -581,8 +604,8 @@ function applySettingsToUI() {
   packScreenTitle.textContent = modeNames[currentMode] || getText("choosePack");
   launchBtn.textContent = getText("launch");
 
-  openPlayersBtn.textContent = `👥 ${getText("players")} (${players.length})`;
-  packPlayersBtn.textContent = `👥 ${getText("players")} (${players.length})`;
+  openPlayersBtn.textContent = `◉ ${getText("players")} (${players.length})`;
+  packPlayersBtn.textContent = `◉ ${getText("players")} (${players.length})`;
 
   nextBtn.textContent = getText("nextCard");
   gameChangePackBtn.textContent = getText("changePack");
@@ -850,10 +873,17 @@ function getRandomCard() {
     sipAmount.style.display = "block";
     sipAmount.textContent = `🥃 IF YOU HAVE: ${randomSips} SIP${randomSips > 1 ? "S" : ""}`;
     playerName.style.display = "none";
+  } else if (currentMode === "knowMeBetter") {
+    sipAmount.style.display = "block";
+    sipAmount.textContent = `🥃 WRONG GUESS: ${randomSips} SIP${randomSips > 1 ? "S" : ""}`;
+  
+    currentCardPlayer = getRandomPlayer();
+    playerName.style.display = "block";
+    playerName.textContent = currentCardPlayer;
   } else {
     sipAmount.style.display = "block";
     sipAmount.textContent = `🥃 ${randomSips} SIP${randomSips > 1 ? "S" : ""}`;
-
+  
     currentCardPlayer = getRandomPlayer();
     playerName.style.display = "block";
     playerName.textContent = currentCardPlayer;
@@ -976,7 +1006,8 @@ function showGameIntro() {
     imposter: getText("introImposter"),
     wouldYouRather: getText("introWouldYouRather"),
     dareRoulette: getText("introDareRoulette"),
-    kingCup: getText("introKingCup")
+    kingCup: getText("introKingCup"),
+knowMeBetter: getText("introKnowMeBetter")
   };
 
   introText.textContent = introTextByMode[currentMode] || "";
@@ -1284,7 +1315,7 @@ wheelBtn.addEventListener("click", () => {
 
   setTimeout(() => {
     resultFeedback();
-    wheelResult.innerHTML = `${highlightedPlayerHTML(chosenPlayer)} ${getText("dareResultMust")}: ${getPersonalisedPromptHTML(randomDare, chosenPlayer)}`;
+    wheelResult.innerHTML = `${highlightedPlayerHTML(chosenPlayer)}, ${getPersonalisedPromptHTML(randomDare, chosenPlayer)}`;
     wheelBtn.disabled = false;
     wheelBtn.textContent = getText("spinAgain");
   }, 3000);
@@ -1618,7 +1649,9 @@ function openHelpModal() {
     imposter: getText("helpImposter"),
     wouldYouRather: getText("helpWouldYouRather"),
     dareRoulette: getText("helpDareRoulette"),
+    knowMeBetter: getText("helpKnowMeBetter"),
     kingCup: getText("helpKingCup")
+
   };
 
   helpText.textContent = helpTextByMode[currentMode] || "";
@@ -1692,14 +1725,64 @@ closeHelpBtn.addEventListener("click", () => {
 });
 
 function openPlayersSheet() {
+  playersScreen.style.transform = "";
   playersScreen.classList.add("show");
   playersOverlay.classList.add("show");
 }
 
 function closePlayersSheet() {
+  playersScreen.style.transform = "";
   playersScreen.classList.remove("show");
   playersOverlay.classList.remove("show");
 }
+
+let isDraggingPlayersSheet = false;
+let playersSheetStartY = 0;
+let playersSheetCurrentY = 0;
+
+playersScreen.addEventListener("pointerdown", event => {
+  const isHandle = event.target === playersCloseHandle;
+
+  if (!isHandle) return;
+
+  isDraggingPlayersSheet = true;
+  playersSheetStartY = event.clientY;
+  playersSheetCurrentY = 0;
+
+  playersScreen.style.transition = "none";
+  playersScreen.setPointerCapture(event.pointerId);
+});
+
+playersScreen.addEventListener("pointermove", event => {
+  if (!isDraggingPlayersSheet) return;
+
+  playersSheetCurrentY = event.clientY - playersSheetStartY;
+
+  if (playersSheetCurrentY < 0) {
+    playersSheetCurrentY = 0;
+  }
+
+  playersScreen.style.transform = `translateY(${playersSheetCurrentY}px)`;
+});
+
+playersScreen.addEventListener("pointerup", () => {
+  if (!isDraggingPlayersSheet) return;
+
+  isDraggingPlayersSheet = false;
+  playersScreen.style.transition = "";
+
+  if (playersSheetCurrentY > 120) {
+    closePlayersSheet();
+  } else {
+    playersScreen.style.transform = "";
+  }
+});
+
+playersScreen.addEventListener("pointercancel", () => {
+  isDraggingPlayersSheet = false;
+  playersScreen.style.transition = "";
+  playersScreen.style.transform = "";
+});
 
 hintToggleBtn.addEventListener("click", () => {
   imposterHintsEnabled = !imposterHintsEnabled;

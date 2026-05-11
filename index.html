@@ -27,7 +27,11 @@
   <body>
     <main class="app">
       <section id="home-screen" class="screen active">
-        <h1>Hazy</h1>
+        <img
+          src="assets/icons/hazy-logo.png"
+          alt="Hazy"
+          class="splash-logo-img"
+        />
         <p class="tagline" id="splash-tagline">
           The neon party game for messy nights in.
         </p>
@@ -59,6 +63,12 @@
       </section>
 
       <section id="mode-screen" class="screen">
+        <img
+          src="assets/icons/hazy-logo.png"
+          alt="Hazy logo"
+          class="mode-logo-img"
+        />
+
         <div class="top-bar">
           <h2 id="choose-game-title">Choose Game</h2>
 
@@ -71,7 +81,7 @@
           </button>
         </div>
 
-        <p class="tagline">Pick the vibes for tonight.</p>
+        <p class="tagline menu-tagline">Pick the vibes for tonight.</p>
 
         <button id="open-players-btn" class="players-pill">
           👥 Players (0)
@@ -168,6 +178,19 @@
             </div>
           </button>
 
+          <button class="mode-card game-tile" data-mode="knowMeBetter">
+            <img
+              src="assets/images/know-me-better.png"
+              alt="Know Me Better"
+              class="game-tile-img"
+            />
+
+            <div class="game-tile-text">
+              <strong>Know Me Better</strong>
+              <span>Guess what the chosen player would say</span>
+            </div>
+          </button>
+
           <button class="mode-card game-tile" data-mode="kingCup">
             <img
               src="assets/images/kings-cup.png"
@@ -260,37 +283,55 @@
             </div>
           </button>
 
-          <button class="pack-card locked" data-pack="crazy">
-            <img src="assets/images/crazy-pack.png" alt="Crazy" />
-            <div>
-              <strong>Crazy</strong>
-              <span>Coming soon</span>
-            </div>
-          </button>
-
-          <button class="pack-card locked" data-pack="university">
-            <img src="assets/images/university-pack.png" alt="University" />
-            <div>
-              <strong>University</strong>
-              <span>Coming soon</span>
-            </div>
-          </button>
-
-          <button class="pack-card locked" data-pack="couples">
-            <img src="assets/images/couples-pack.png" alt="Couples" />
-            <div>
-              <strong>Couples</strong>
-              <span>Coming soon</span>
-            </div>
-          </button>
-
-          <button class="pack-card locked" data-pack="girlsNight">
+          <button class="pack-card" data-pack="girlsNight">
             <img src="assets/images/girls-night-pack.png" alt="Girls Night" />
             <div>
               <strong>Girls Night</strong>
-              <span>Coming soon</span>
+              <span>Friendship, gossip and chaos</span>
             </div>
           </button>
+
+          <button class="pack-card" data-pack="couples">
+            <img src="assets/images/couples-pack.png" alt="Couples" />
+            <div>
+              <strong>Couples</strong>
+              <span>Date night and relationship questions</span>
+            </div>
+          </button>
+
+          <button class="pack-card" data-pack="chaos">
+            <img src="assets/images/chaos-pack.png" alt="Chaos" />
+            <div>
+              <strong>Chaos</strong>
+              <span>Messier, louder party prompts</span>
+            </div>
+          </button>
+
+          <button class="pack-card" data-pack="bestFriends">
+            <img src="assets/images/best-friends-pack.png" alt="Best Friends" />
+            <div>
+              <strong>Best Friends</strong>
+              <span>Inside jokes and friendship tests</span>
+            </div>
+          </button>
+
+          <button class="pack-card" data-pack="houseParty">
+            <img src="assets/images/house-party-pack.png" alt="House Party" />
+            <div>
+              <strong>House Party</strong>
+              <span>Pres, music and party energy</span>
+            </div>
+          </button>
+          <div class="pack-placeholder" aria-hidden="true">
+            <div class="pack-placeholder-thumb">
+              <span>✦</span>
+            </div>
+
+            <div class="pack-placeholder-text">
+              <strong>More Packs Soon</strong>
+              <span>New themes and categories are on the way</span>
+            </div>
+          </div>
         </div>
 
         <button id="launch-btn" class="launch-btn" disabled>Launch</button>
