@@ -906,6 +906,23 @@ function setupTruthDarePlayer() {
   animateCard(truthDareCard);
 }
 
+function updatePackMenu() {
+  const normalPacks = document.querySelectorAll(".normal-pack");
+  const imposterPacks = document.querySelectorAll(".imposter-pack");
+
+  if (currentMode === "imposter") {
+    normalPacks.forEach(pack => pack.classList.add("hidden-pack"));
+    imposterPacks.forEach(pack => pack.classList.remove("hidden-pack"));
+
+    packScreenTitle.textContent = "Imposter";
+  } else {
+    normalPacks.forEach(pack => pack.classList.remove("hidden-pack"));
+    imposterPacks.forEach(pack => pack.classList.add("hidden-pack"));
+
+    packScreenTitle.textContent = modeNames[currentMode] || getText("choosePack");
+  }
+}
+
 function clearPackSelection() {
   selectedPack = "classic";
   launchBtn.disabled = false;
@@ -913,13 +930,22 @@ function clearPackSelection() {
   packCards.forEach(pack => {
     pack.classList.remove("selected");
 
-    if (pack.dataset.pack === "classic") {
+    const isCorrectPackType =
+      currentMode === "imposter"
+        ? pack.classList.contains("imposter-pack")
+        : pack.classList.contains("normal-pack");
+
+    if (isCorrectPackType && pack.dataset.pack === "classic") {
       pack.classList.add("selected");
     }
   });
 }
 
 function selectPack(packButton) {
+  if (packButton.classList.contains("hidden-pack")) {
+    return;
+  }
+
   if (packButton.classList.contains("locked")) {
     showGameAlert(getText("comingSoonTitle"), getText("comingSoonText"));
     return;
@@ -1150,9 +1176,15 @@ modeCards.forEach(card => {
     clearPackSelection();
 
     if (currentMode === "imposter") {
+      packScreen.classList.remove("normal-pack-mode");
+      packScreen.classList.add("imposter-pack-mode");
+    
       showScreen(imposterSettingsScreen);
       return;
     }
+    
+    packScreen.classList.remove("imposter-pack-mode");
+    packScreen.classList.add("normal-pack-mode");
 
     if (card.dataset.mode === "wouldYouRather") {
       currentMode = "wouldYouRather";
@@ -1820,6 +1852,10 @@ imposterSettingsBackBtn.addEventListener("click", () => {
 
 imposterSettingsContinueBtn.addEventListener("click", () => {
   packScreenTitle.textContent = "Imposter";
+
+  packScreen.classList.remove("normal-pack-mode");
+  packScreen.classList.add("imposter-pack-mode");
+
   clearPackSelection();
   showScreen(packScreen);
 });

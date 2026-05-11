@@ -158,10 +158,6 @@ h2 {
   right: 0;
 }
 
-#settings-btn {
-  left: auto !important;
-}
-
 /* CARDS */
 .card {
   min-height: 260px;
@@ -252,10 +248,6 @@ h2 {
 #mode-screen .mode-grid {
   grid-template-columns: 1fr;
 } /* Pack/category menu becomes a 2-column grid */
-
-#mode-screen {
-  padding-top: 8px;
-}
 
 #pack-screen .mode-grid {
   grid-template-columns: repeat(2, 1fr);
@@ -381,6 +373,45 @@ h2 {
 }
 
 .pack-card[data-pack="houseParty"] img {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 8px #8b5cf6, 0 0 16px #8b5cf6;
+}
+
+.normal-pack,
+.imposter-pack {
+  display: flex;
+}
+
+.normal-pack.hidden-pack,
+.imposter-pack.hidden-pack {
+  display: none;
+}
+
+.pack-placeholder.hidden-pack {
+  display: none;
+}
+
+.pack-card[data-pack="food"] img {
+  border-color: #ff8c00;
+  box-shadow: 0 0 8px #ff8c00, 0 0 16px #ff8c00;
+}
+
+.pack-card[data-pack="animals"] img {
+  border-color: #12ffb5;
+  box-shadow: 0 0 8px #12ffb5, 0 0 16px #12ffb5;
+}
+
+.pack-card[data-pack="places"] img {
+  border-color: #00e5ff;
+  box-shadow: 0 0 8px #00e5ff, 0 0 16px #00e5ff;
+}
+
+.pack-card[data-pack="party"] img {
+  border-color: #ff2bd6;
+  box-shadow: 0 0 8px #ff2bd6, 0 0 16px #ff2bd6;
+}
+
+.pack-card[data-pack="movies"] img {
   border-color: #8b5cf6;
   box-shadow: 0 0 8px #8b5cf6, 0 0 16px #8b5cf6;
 }
@@ -1032,12 +1063,8 @@ h2 {
 ===================== */
 
 .settings-cog {
-  position: fixed;
-  top: calc(env(safe-area-inset-top) + 22px);
-  right: 22px;
   left: auto;
-  z-index: 70;
-
+  right: 0;
   font-size: 24px;
   line-height: 1;
 }
@@ -1745,4 +1772,25 @@ h2 {
       drop-shadow(0 0 38px rgba(0, 229, 255, 0.6));
     transform: scale(1.025);
   }
+}
+
+/* Hide pack types by default */
+.imposter-pack,
+.normal-pack {
+  display: none;
+}
+
+/* Show normal packs when choosing packs for normal games */
+#pack-screen.normal-pack-mode .normal-pack {
+  display: flex;
+}
+
+/* Show imposter packs when choosing packs for Imposter */
+#pack-screen.imposter-pack-mode .imposter-pack {
+  display: flex;
+}
+
+/* Always show the coming soon box */
+#pack-screen .pack-placeholder {
+  display: flex;
 }

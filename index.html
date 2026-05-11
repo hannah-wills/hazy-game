@@ -94,7 +94,6 @@
               alt="Sip If"
               class="game-tile-img"
             />
-
             <div class="game-tile-text">
               <strong>Sip If...</strong>
               <span>Drink if the statement applies to you</span>
@@ -107,7 +106,6 @@
               alt="Most Likely To"
               class="game-tile-img"
             />
-
             <div class="game-tile-text">
               <strong>Most Likely To</strong>
               <span>Vote for the player that fits best</span>
@@ -120,7 +118,6 @@
               alt="Truth or Dare"
               class="game-tile-img"
             />
-
             <div class="game-tile-text">
               <strong>Truth or Dare</strong>
               <span>Choose truth or dare cards</span>
@@ -133,7 +130,6 @@
               alt="Never Have I Ever"
               class="game-tile-img"
             />
-
             <div class="game-tile-text">
               <strong>Never Have I Ever</strong>
               <span>Confess your chaos</span>
@@ -146,7 +142,6 @@
               alt="Imposter"
               class="game-tile-img"
             />
-
             <div class="game-tile-text">
               <strong>Imposter</strong>
               <span>Find the secret imposters</span>
@@ -159,7 +154,6 @@
               alt="Would You Rather"
               class="game-tile-img"
             />
-
             <div class="game-tile-text">
               <strong>Would You Rather</strong>
               <span>Pick one of two options per player</span>
@@ -184,7 +178,6 @@
               alt="Know Me Better"
               class="game-tile-img"
             />
-
             <div class="game-tile-text">
               <strong>Know Me Better</strong>
               <span>Guess what the chosen player would say</span>
@@ -197,7 +190,6 @@
               alt="King's Cup"
               class="game-tile-img"
             />
-
             <div class="game-tile-text">
               <strong>King's Cup</strong>
               <span>Drag cards and follow the rule</span>
@@ -267,7 +259,8 @@
         </button>
 
         <div class="mode-grid">
-          <button class="pack-card" data-pack="classic">
+          <!-- NORMAL GAME PACKS -->
+          <button class="pack-card normal-pack" data-pack="classic">
             <img src="assets/images/classic-pack.png" alt="Classic" />
             <div>
               <strong>Classic</strong>
@@ -275,7 +268,7 @@
             </div>
           </button>
 
-          <button class="pack-card" data-pack="spicy">
+          <button class="pack-card normal-pack" data-pack="spicy">
             <img src="assets/images/spicy-pack.png" alt="Spicy" />
             <div>
               <strong>Spicy</strong>
@@ -283,53 +276,111 @@
             </div>
           </button>
 
-          <button class="pack-card" data-pack="girlsNight">
+          <button class="pack-card normal-pack locked" data-pack="girlsNight">
             <img src="assets/images/girls-night-pack.png" alt="Girls Night" />
             <div>
               <strong>Girls Night</strong>
-              <span>Friendship, gossip and chaos</span>
+              <span>Coming soon</span>
             </div>
           </button>
 
-          <button class="pack-card" data-pack="couples">
+          <button class="pack-card normal-pack locked" data-pack="couples">
             <img src="assets/images/couples-pack.png" alt="Couples" />
             <div>
               <strong>Couples</strong>
-              <span>Date night and relationship questions</span>
+              <span>Coming soon</span>
             </div>
           </button>
 
-          <button class="pack-card" data-pack="chaos">
+          <button class="pack-card normal-pack locked" data-pack="chaos">
             <img src="assets/images/chaos-pack.png" alt="Chaos" />
             <div>
               <strong>Chaos</strong>
-              <span>Messier, louder party prompts</span>
+              <span>Coming soon</span>
             </div>
           </button>
 
-          <button class="pack-card" data-pack="bestFriends">
+          <button class="pack-card normal-pack locked" data-pack="bestFriends">
             <img src="assets/images/best-friends-pack.png" alt="Best Friends" />
             <div>
               <strong>Best Friends</strong>
-              <span>Inside jokes and friendship tests</span>
+              <span>Coming soon</span>
             </div>
           </button>
 
-          <button class="pack-card" data-pack="houseParty">
+          <button class="pack-card normal-pack locked" data-pack="houseParty">
             <img src="assets/images/house-party-pack.png" alt="House Party" />
             <div>
               <strong>House Party</strong>
-              <span>Pres, music and party energy</span>
+              <span>Coming soon</span>
             </div>
           </button>
-          <div class="pack-placeholder" aria-hidden="true">
+
+          <!-- IMPOSTER PACKS -->
+          <button class="pack-card imposter-pack" data-pack="classic">
+            <img src="assets/images/classic-imposter.png" alt="Classic" />
+            <div>
+              <strong>Classic</strong>
+              <span>Easy everyday words</span>
+            </div>
+          </button>
+
+          <button class="pack-card imposter-pack" data-pack="spicy">
+            <img src="assets/images/spicy-pack.png" alt="Spicy" />
+            <div>
+              <strong>Spicy</strong>
+              <span>Flirty mystery words</span>
+            </div>
+          </button>
+
+          <button class="pack-card imposter-pack" data-pack="food">
+            <img src="assets/images/food-pack.png" alt="Food" />
+            <div>
+              <strong>Food</strong>
+              <span>Snacks, meals and drinks</span>
+            </div>
+          </button>
+
+          <button class="pack-card imposter-pack" data-pack="animals">
+            <img src="assets/images/animals-pack.png" alt="Animals" />
+            <div>
+              <strong>Animals</strong>
+              <span>Pets, wildlife and creatures</span>
+            </div>
+          </button>
+
+          <button class="pack-card imposter-pack" data-pack="places">
+            <img src="assets/images/places-pack.png" alt="Places" />
+            <div>
+              <strong>Places</strong>
+              <span>Locations and destinations</span>
+            </div>
+          </button>
+
+          <button class="pack-card imposter-pack" data-pack="party">
+            <img src="assets/images/party-pack.png" alt="Party" />
+            <div>
+              <strong>Party</strong>
+              <span>Night out and party words</span>
+            </div>
+          </button>
+
+          <button class="pack-card imposter-pack" data-pack="movies">
+            <img src="assets/images/movies-pack.png" alt="Movies" />
+            <div>
+              <strong>Movies</strong>
+              <span>Films, cinema and characters</span>
+            </div>
+          </button>
+
+          <div class="pack-placeholder">
             <div class="pack-placeholder-thumb">
-              <span>✦</span>
+              <span>+</span>
             </div>
 
             <div class="pack-placeholder-text">
-              <strong>More Packs Soon</strong>
-              <span>New themes and categories are on the way</span>
+              <strong>More Packs</strong>
+              <span>Coming soon...</span>
             </div>
           </div>
         </div>
