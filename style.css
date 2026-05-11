@@ -156,7 +156,13 @@ h2 {
 .top-bar .icon-btn:last-child {
   left: auto;
   right: 0;
-} /* CARDS */
+}
+
+#settings-btn {
+  left: auto !important;
+}
+
+/* CARDS */
 .card {
   min-height: 260px;
   padding: 32px;
@@ -246,6 +252,11 @@ h2 {
 #mode-screen .mode-grid {
   grid-template-columns: 1fr;
 } /* Pack/category menu becomes a 2-column grid */
+
+#mode-screen {
+  padding-top: 8px;
+}
+
 #pack-screen .mode-grid {
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
@@ -588,15 +599,29 @@ h2 {
   transform: translateY(0);
 }
 .sheet-handle {
-  width: 54px;
-  height: 6px;
+  width: 64px;
+  height: 7px;
   border: none;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.35);
   margin: 0 auto 22px;
   display: block;
-  cursor: pointer;
-} /* TRUTH OR DARE */
+  cursor: grab;
+
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.players-sheet {
+  touch-action: pan-y;
+}
+
+.players-sheet.dragging {
+  touch-action: none;
+}
+
+/* TRUTH OR DARE */
 .truth-dare-buttons {
   display: grid;
   gap: 14px;
@@ -1007,8 +1032,12 @@ h2 {
 ===================== */
 
 .settings-cog {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 22px);
+  right: 22px;
   left: auto;
-  right: 0;
+  z-index: 70;
+
   font-size: 24px;
   line-height: 1;
 }

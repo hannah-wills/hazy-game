@@ -1741,11 +1741,16 @@ let playersSheetStartY = 0;
 let playersSheetCurrentY = 0;
 
 playersScreen.addEventListener("pointerdown", event => {
-  const isHandle = event.target === playersCloseHandle;
+  const isHandle =
+  event.target === playersCloseHandle ||
+  event.target.closest(".sheet-handle");
 
   if (!isHandle) return;
 
+  event.preventDefault();
+
   isDraggingPlayersSheet = true;
+  playersScreen.classList.add("dragging");
   playersSheetStartY = event.clientY;
   playersSheetCurrentY = 0;
 
@@ -1769,6 +1774,7 @@ playersScreen.addEventListener("pointerup", () => {
   if (!isDraggingPlayersSheet) return;
 
   isDraggingPlayersSheet = false;
+  playersScreen.classList.remove("dragging");
   playersScreen.style.transition = "";
 
   if (playersSheetCurrentY > 120) {
@@ -1780,6 +1786,7 @@ playersScreen.addEventListener("pointerup", () => {
 
 playersScreen.addEventListener("pointercancel", () => {
   isDraggingPlayersSheet = false;
+  playersScreen.classList.remove("dragging");
   playersScreen.style.transition = "";
   playersScreen.style.transform = "";
 });
