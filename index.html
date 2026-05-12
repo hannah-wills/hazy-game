@@ -338,6 +338,22 @@
             </div>
           </button>
 
+          <button class="pack-card king-pack" data-pack="classic">
+            <img src="assets/images/classic-pack.png" alt="Classic" />
+            <div>
+              <strong>Classic</strong>
+              <span>Original King’s Cup rules</span>
+            </div>
+          </button>
+
+          <button class="pack-card king-pack" data-pack="hardcore">
+            <img src="assets/images/hardcore-pack.png" alt="Hardcore" />
+            <div>
+              <strong>Hardcore</strong>
+              <span>Harsher rules and more sips</span>
+            </div>
+          </button>
+
           <!-- IMPOSTER PACKS -->
           <button class="pack-card imposter-pack" data-pack="classic">
             <img src="assets/images/classic-imposter.png" alt="Classic" />
@@ -658,10 +674,7 @@
           </div>
         </div>
 
-        <div id="red-flag-result-area" class="red-flag-result-area hidden">
-          <h3 id="red-flag-result-title">Result</h3>
-          <p id="red-flag-result-text">Result text goes here.</p>
-        </div>
+        <p id="red-flag-result" class="red-flag-result hidden"></p>
 
         <button id="red-flag-next-btn" class="main-btn hidden">
           Next Profile
@@ -724,7 +737,11 @@
           <div id="king-card-circle" class="king-card-circle"></div>
 
           <div class="king-cup-center">
-            <span>👑</span>
+            <img
+              src="assets/images/kings-crown.png"
+              alt=""
+              class="king-cup-center-img"
+            />
             <strong>KING'S<br />CUP</strong>
           </div>
         </div>
@@ -738,7 +755,7 @@
         </div>
 
         <button id="king-change-pack-btn" class="secondary-btn game-action-btn">
-          Change Pack
+          Browse Packs
         </button>
 
         <button id="king-back-games-btn" class="secondary-btn game-action-btn">

@@ -1643,37 +1643,37 @@ const gameCards = {
   kingCup: {
     classic: {
       rules: {
-        A: "Waterfall — Everyone starts drinking. You can stop when the person before you stops.",
-        2: "You — Choose someone to drink.",
-        3: "Me — You drink.",
-        4: "Floor — Last player to touch the floor drinks.",
-        5: "Guys — All guys drink.",
-        6: "Girls — All girls drink.",
-        7: "Heaven — Last player to point up drinks.",
-        8: "Mate — Choose a drinking buddy. They drink whenever you drink.",
-        9: "Rhyme — Say a word. Everyone must rhyme with it. First to fail drinks.",
-        10: "Categories — Pick a category. Everyone names something in it. First to fail drinks.",
-        J: "Make a Rule — Create a rule everyone must follow.",
-        Q: "Question Master — Anyone who answers your questions drinks.",
-        K: "King — Pour some drink into the King's Cup. The 4th King drinks it!"
+        A: "Waterfall. Everyone starts drinking. You can stop when the player before you stops.",
+        2: "You. Choose someone to drink.",
+        3: "Me. You drink.",
+        4: "Floor. Last player to touch the floor drinks.",
+        5: "Guys. All guys drink.",
+        6: "Chicks. All girls drink.",
+        7: "Heaven. Last player to point up drinks.",
+        8: "Mate. Pick a drinking buddy. They drink whenever you drink.",
+        9: "Rhyme. Say a word. Everyone takes turns rhyming. First to fail drinks.",
+        10: "Categories. Pick a category. Everyone takes turns naming something in it. First to fail drinks.",
+        J: "Make a rule. Everyone must follow it until the game ends.",
+        Q: "Question master. If someone answers your question, they drink.",
+        K: "King. Pour some of your drink into the King’s Cup."
       }
     },
-
-    spicy: {
+  
+    hardcore: {
       rules: {
-        A: "Waterfall — Everyone starts drinking. You can stop when the person before you stops.",
-        2: "You — Choose someone to drink.",
-        3: "Me — You drink.",
-        4: "Floor — Last player to touch the floor drinks.",
-        5: "Flirt — Give someone a cheeky compliment or drink.",
-        6: "Sip and Tell — Share a harmless secret or drink.",
-        7: "Heaven — Last player to point up drinks.",
-        8: "Mate — Choose a drinking buddy. They drink whenever you drink.",
-        9: "Rhyme — Say a word. Everyone must rhyme with it. First to fail drinks.",
-        10: "Categories — Pick a spicy-safe category. First to fail drinks.",
-        J: "Make a Rule — Create a rule everyone must follow.",
-        Q: "Question Master — Anyone who answers your questions drinks.",
-        K: "King — Pour some drink into the King's Cup. The 4th King drinks it!"
+        A: "Brutal Waterfall. Everyone drinks. You can only stop when the player before you stops. Last person takes 2 extra sips.",
+        2: "You. Choose someone to drink 3 sips.",
+        3: "Me. You drink 3 sips.",
+        4: "Floor. Last player to touch the floor drinks 2 sips.",
+        5: "Guys. All guys drink 2 sips.",
+        6: "Chicks. All girls drink 2 sips.",
+        7: "Heaven. Last player to point up drinks 3 sips.",
+        8: "Mate. Pick a drinking buddy. They drink whenever you drink. Both take 1 sip now.",
+        9: "Rhyme. First player to fail drinks 3 sips.",
+        10: "Categories. Pick a category. Everyone takes turns naming something in it. First player to fail drinks 3 sips.",
+        J: "Make a rule. Anyone who breaks it drinks 2 sips.",
+        Q: "Question master. If someone answers your question, they drink 2 sips.",
+        K: "King. Pour into the King’s Cup. If this is the 4th King, finish it."
       }
     }
   },

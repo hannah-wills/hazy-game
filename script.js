@@ -138,8 +138,7 @@ const redFlagRevealBox = document.getElementById("red-flag-reveal-box");
 const redFlagText = document.getElementById("red-flag-text");
 const redFlagLeftBtn = document.getElementById("red-flag-left-btn");
 const redFlagRightBtn = document.getElementById("red-flag-right-btn");
-const redFlagResultArea = document.getElementById("red-flag-result-area");
-const redFlagResultText = document.getElementById("red-flag-result-text");
+const redFlagResult = document.getElementById("red-flag-result");
 const redFlagNextBtn = document.getElementById("red-flag-next-btn");
 const redFlagBackGamesBtn = document.getElementById("red-flag-back-games-btn");
 
@@ -272,8 +271,11 @@ function resetGameState(options = {}) {
   redFlagRecentCards = [];
   currentRedFlagProfile = null;
   
-  if (redFlagResultText) redFlagResultText.textContent = "";
-  if (redFlagResultArea) redFlagResultArea.classList.add("hidden");
+  if (redFlagResult) {
+    redFlagResult.textContent = "";
+    redFlagResult.classList.add("hidden");
+  }
+  
   if (redFlagRevealBox) redFlagRevealBox.classList.add("hidden");
   if (redFlagNextBtn) redFlagNextBtn.classList.add("hidden");
   if (redFlagLeftBtn) redFlagLeftBtn.disabled = false;
@@ -484,7 +486,7 @@ const languageText = {
     nextCard: "Next Card",
     nextQuestion: "Next Question",
     nextPlayer: "Next Player",
-    changePack: "Change Pack",
+    changePack: "Browse Packs",
     changeCategory: "Change Category",
     backToGames: "Back to Games",
 
@@ -1013,8 +1015,10 @@ function setupRedFlagProfile() {
   redFlagText.textContent = chosenProfile.redFlag;
 
   redFlagRevealBox.classList.add("hidden");
-  redFlagResultText.textContent = "";
-  redFlagResultArea.classList.add("hidden");
+
+  redFlagResult.textContent = "";
+  redFlagResult.classList.add("hidden");
+
   redFlagNextBtn.classList.add("hidden");
 
   redFlagLeftBtn.disabled = false;
@@ -1022,6 +1026,7 @@ function setupRedFlagProfile() {
 
   redFlagCard.classList.remove("swipe-left", "swipe-right", "dragging", "card-change");
   redFlagCard.style.transform = "";
+  redFlagCard.style.opacity = "";
 
   void redFlagCard.offsetWidth;
   redFlagCard.classList.add("card-change");
@@ -1039,15 +1044,26 @@ function handleRedFlagSwipe(choice) {
 
   redFlagRevealBox.classList.remove("hidden");
 
+  redFlagCard.classList.remove("swipe-left", "swipe-right");
+  redFlagCard.style.transform = "";
+  redFlagCard.style.opacity = "";
+
   if (choice === "right") {
     redFlagCard.classList.add("swipe-right");
   } else {
     redFlagCard.classList.add("swipe-left");
   }
 
-  redFlagResultText.textContent = getRandomRedFlagOutcome(choice);
-  redFlagResultArea.classList.remove("hidden");
+  redFlagResult.textContent = getRandomRedFlagOutcome(choice);
+  redFlagResult.classList.remove("hidden");
+
   redFlagNextBtn.classList.remove("hidden");
+
+  setTimeout(() => {
+    redFlagCard.classList.remove("swipe-left", "swipe-right");
+    redFlagCard.style.transform = "";
+    redFlagCard.style.opacity = "";
+  }, 260);
 
   resultFeedback();
 }
@@ -1060,9 +1076,12 @@ function addRedFlagSwipeGesture() {
   let currentX = 0;
 
   redFlagCard.addEventListener("pointerdown", event => {
+    if (redFlagLeftBtn.disabled || redFlagRightBtn.disabled) return;
+
     isDragging = true;
     startX = event.clientX;
     currentX = 0;
+
     redFlagCard.classList.add("dragging");
     redFlagCard.setPointerCapture(event.pointerId);
   });
@@ -1071,39 +1090,39 @@ function addRedFlagSwipeGesture() {
     if (!isDragging) return;
 
     currentX = event.clientX - startX;
-    const rotate = currentX * 0.08;
 
-    redFlagCard.style.transform = `translateX(${currentX}px) rotate(${rotate}deg)`;
+    const limitedX = Math.max(-120, Math.min(120, currentX));
+    const rotate = limitedX * 0.06;
+
+    redFlagCard.style.transform =
+      `translateX(${limitedX}px) rotate(${rotate}deg)`;
   });
-
-  function resetCardPosition() {
-    redFlagCard.style.transform = "";
-    redFlagCard.classList.remove("dragging");
-  }
 
   redFlagCard.addEventListener("pointerup", () => {
     if (!isDragging) return;
+
     isDragging = false;
     redFlagCard.classList.remove("dragging");
 
-    if (currentX > 90) {
+    if (currentX > 75) {
       redFlagCard.style.transform = "";
       handleRedFlagSwipe("right");
       return;
     }
 
-    if (currentX < -90) {
+    if (currentX < -75) {
       redFlagCard.style.transform = "";
       handleRedFlagSwipe("left");
       return;
     }
 
-    resetCardPosition();
+    redFlagCard.style.transform = "";
   });
 
   redFlagCard.addEventListener("pointercancel", () => {
     isDragging = false;
-    resetCardPosition();
+    redFlagCard.classList.remove("dragging");
+    redFlagCard.style.transform = "";
   });
 }
 
@@ -1144,13 +1163,14 @@ function clearPackSelection() {
   packCards.forEach(pack => {
     pack.classList.remove("selected");
 
-    const isCorrectPackType =
-      currentMode === "imposter"
-        ? pack.classList.contains("imposter-pack")
-        : pack.classList.contains("normal-pack");
+    let isCorrectPackType = false;
 
-    if (isCorrectPackType && pack.dataset.pack === "classic") {
-      pack.classList.add("selected");
+    if (currentMode === "imposter") {
+      isCorrectPackType = pack.classList.contains("imposter-pack");
+    } else if (currentMode === "kingCup") {
+      isCorrectPackType = pack.classList.contains("king-pack");
+    } else {
+      isCorrectPackType = pack.classList.contains("normal-pack");
     }
   });
 }
@@ -1416,7 +1436,18 @@ modeCards.forEach(card => {
       return;
     }
 
-    packScreen.classList.remove("imposter-pack-mode");
+    if (currentMode === "kingCup") {
+      packScreen.classList.remove("normal-pack-mode", "imposter-pack-mode");
+      packScreen.classList.add("king-pack-mode");
+    
+      packScreenTitle.textContent = "King's Cup";
+      clearPackSelection();
+    
+      showScreen(packScreen);
+      return;
+    }
+
+    packScreen.classList.remove("imposter-pack-mode", "king-pack-mode");
     packScreen.classList.add("normal-pack-mode");
 
     packScreenTitle.textContent = modeNames[currentMode];
@@ -1689,7 +1720,7 @@ function renderKingCircle() {
   kingCardCircle.innerHTML = "";
 
   const totalCards = kingDeck.length;
-  const radius = 39;
+  const radius = 35;
 
   kingDeck.forEach((card, index) => {
     const cardElement = document.createElement("button");
@@ -1968,6 +1999,8 @@ openPlayersBtn.addEventListener("click", () => {
   openPlayersSheet();
 });
 
+
+
 packPlayersBtn.addEventListener("click", () => {
   openPlayersSheet();
 });
@@ -1988,12 +2021,15 @@ function openPlayersSheet() {
   playersScreen.style.transform = "";
   playersScreen.classList.add("show");
   playersOverlay.classList.add("show");
+  document.body.classList.add("players-sheet-open");
+
 }
 
 function closePlayersSheet() {
   playersScreen.style.transform = "";
   playersScreen.classList.remove("show");
   playersOverlay.classList.remove("show");
+  document.body.classList.remove("players-sheet-open");
 }
 
 let isDraggingPlayersSheet = false;
@@ -2081,7 +2117,7 @@ imposterSettingsBackBtn.addEventListener("click", () => {
 imposterSettingsContinueBtn.addEventListener("click", () => {
   packScreenTitle.textContent = "Imposter";
 
-  packScreen.classList.remove("normal-pack-mode");
+  packScreen.classList.remove("normal-pack-mode", "king-pack-mode");
   packScreen.classList.add("imposter-pack-mode");
 
   clearPackSelection();

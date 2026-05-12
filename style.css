@@ -278,31 +278,42 @@ h2 {
   border: none;
   border-radius: 28px;
   padding: 18px 16px;
+
   background: linear-gradient(180deg, #5a1d87 0%, #34124f 100%);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+
   font-size: 20px;
   font-weight: 800;
   line-height: 1.15;
+  color: white;
   cursor: pointer;
-  transition: all 0.14s ease;
+
   overflow: hidden;
-  box-shadow: none; /* remove default purple-ish shadow */
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow: 0 8px 0 #12051d, 0 14px 28px rgba(0, 0, 0, 0.32),
+    0 0 20px rgba(255, 43, 214, 0.12), inset 0 0 20px rgba(255, 255, 255, 0.02);
 }
 .mode-card:hover,
 .pack-card:hover {
-  transform: translateY(2px);
-  box-shadow: 0 6px 0 #12051d, 0 10px 20px rgba(0, 0, 0, 0.32),
-    0 0 28px rgba(255, 43, 214, 0.22);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 0 #12051d, 0 18px 30px rgba(0, 0, 0, 0.38),
+    0 0 26px rgba(255, 43, 214, 0.24), 0 0 18px rgba(0, 229, 255, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.04);
 }
+
 .mode-card:active,
 .pack-card:active {
-  transform: translateY(5px);
-  box-shadow: 0 3px 0 #12051d, 0 5px 12px rgba(0, 0, 0, 0.25),
-    0 0 20px rgba(255, 43, 214, 0.18);
+  transform: translateY(6px);
+  box-shadow: 0 3px 0 #12051d, 0 6px 14px rgba(0, 0, 0, 0.28),
+    0 0 18px rgba(255, 43, 214, 0.18);
 }
 .mode-card span,
 .pack-card span {
@@ -375,6 +386,12 @@ h2 {
 .pack-card[data-pack="houseParty"] img {
   border-color: #8b5cf6;
   box-shadow: 0 0 8px #8b5cf6, 0 0 16px #8b5cf6;
+}
+
+.pack-card[data-pack="hardcore"] img {
+  border-color: #ff1744;
+  box-shadow: 0 0 8px #ff1744, 0 0 16px #ff1744, 0 0 30px rgba(255, 23, 68, 0.8),
+    inset 0 0 12px rgba(255, 23, 68, 0.25);
 }
 
 .normal-pack,
@@ -475,6 +492,19 @@ h2 {
   color: #d4d4d4;
 }
 
+.king-pack {
+  display: none;
+}
+
+#pack-screen.king-pack-mode .king-pack {
+  display: flex;
+}
+
+#pack-screen.king-pack-mode .normal-pack,
+#pack-screen.king-pack-mode .imposter-pack {
+  display: none;
+}
+
 /* PLAYERS */
 .players-pill {
   display: flex;
@@ -541,11 +571,14 @@ h2 {
 #player-list {
   list-style: none;
   padding: 4px 6px 4px 0;
-  margin: 0 0 20px;
+  margin: 0 0 18px;
   display: grid;
   gap: 10px;
 
+  flex: 1;
+  min-height: 0;
   max-height: 260px;
+
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -993,15 +1026,6 @@ h2 {
   flex-shrink: 0;
 }
 
-#player-list {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-right: 6px;
-  margin-bottom: 18px;
-}
-
 .player-highlight,
 .highlight-player-name {
   color: #ff6acb;
@@ -1223,11 +1247,15 @@ h2 {
    KING'S CUP - NEON PLAYING CARDS
 ===================== */
 
+#king-cup-screen {
+  max-width: 430px;
+}
+
 .king-table {
   position: relative;
-  width: 330px;
-  height: 330px;
-  margin: 20px auto 16px;
+  width: 260px;
+  height: 260px;
+  margin: 14px auto 28px;
 }
 
 .king-card-circle {
@@ -1240,57 +1268,79 @@ h2 {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 122px;
-  height: 122px;
+  width: 92px;
+  height: 92px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
+
   background: radial-gradient(
     circle,
     rgba(255, 255, 255, 0.12),
-    rgba(255, 43, 214, 0.14)
+    rgba(255, 43, 214, 0.14),
+    rgba(8, 0, 18, 0.96)
   );
-  border: 2px solid rgba(255, 255, 255, 0.75);
-  box-shadow: 0 0 16px rgba(255, 43, 214, 0.55), 0 0 26px rgba(0, 229, 255, 0.2),
-    inset 0 0 20px rgba(255, 255, 255, 0.08);
+
+  border: 2px solid rgba(255, 255, 255, 0.48);
+
+  box-shadow: 0 0 14px rgba(255, 43, 214, 0.55),
+    0 0 24px rgba(0, 229, 255, 0.22), inset 0 0 18px rgba(255, 255, 255, 0.08);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  z-index: 2;
+
+  z-index: 30;
+  pointer-events: none;
+  padding: 8px;
 }
 
-.king-cup-center span {
-  font-size: 30px;
+.king-cup-center-img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  display: block;
+
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.85))
+    drop-shadow(0 0 10px rgba(255, 43, 214, 0.75))
+    drop-shadow(0 0 16px rgba(0, 229, 255, 0.45));
 }
 
 .king-cup-center strong {
-  font-size: 14px;
+  font-size: 10px;
   line-height: 1.05;
   letter-spacing: 1px;
   text-align: center;
+  color: white;
+  text-shadow: 0 0 8px rgba(255, 43, 214, 0.65),
+    0 0 12px rgba(0, 229, 255, 0.25);
 }
 
 .king-circle-card {
   position: absolute;
-  width: 48px;
-  height: 72px;
+  width: 34px;
+  height: 52px;
   border: none;
-  border-radius: 7px;
+  border-radius: 6px;
   padding: 0;
+
   background: linear-gradient(180deg, #fffefe 0%, #fff3fa 100%);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28), 0 0 10px rgba(255, 79, 216, 0.35),
-    0 0 16px rgba(0, 229, 255, 0.12);
+
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28), 0 0 8px rgba(255, 79, 216, 0.35),
+    0 0 12px rgba(0, 229, 255, 0.12);
+
   cursor: grab;
   touch-action: none;
   overflow: hidden;
-  z-index: 4;
+  z-index: 10;
+
   transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
 }
 
 .king-circle-card.dragging {
   cursor: grabbing;
-  z-index: 20;
+  z-index: 50;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4), 0 0 14px rgba(255, 79, 216, 0.55),
     0 0 22px rgba(0, 229, 255, 0.22);
 }
@@ -1308,7 +1358,7 @@ h2 {
 .king-card-front-face {
   width: 100%;
   height: 100%;
-  border-radius: 7px;
+  border-radius: 6px;
   position: relative;
 }
 
@@ -1320,7 +1370,7 @@ h2 {
 .king-card-back-inner {
   width: 100%;
   height: 100%;
-  border-radius: 5px;
+  border-radius: 4px;
   border: 1px solid rgba(255, 79, 216, 0.4);
   background: repeating-linear-gradient(
     135deg,
@@ -1335,11 +1385,10 @@ h2 {
 }
 
 .king-card-back-logo {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 900;
   color: #7a197f;
   letter-spacing: 0.5px;
-  text-shadow: 0 0 6px rgba(255, 79, 216, 0.2);
 }
 
 .king-card-front-face {
@@ -1356,19 +1405,19 @@ h2 {
 
 .king-card-corner {
   position: absolute;
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 900;
   line-height: 1;
 }
 
 .king-card-corner.top-left {
-  top: 5px;
-  left: 5px;
+  top: 4px;
+  left: 4px;
 }
 
 .king-card-corner.bottom-right {
-  right: 5px;
-  bottom: 5px;
+  right: 4px;
+  bottom: 4px;
   transform: rotate(180deg);
 }
 
@@ -1376,50 +1425,66 @@ h2 {
   position: absolute;
   top: 50%;
   left: 50%;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 900;
   transform: translate(-50%, -50%);
 }
 
 .king-rule-card {
-  min-height: 180px;
+  min-height: 150px;
+  padding: 24px 22px;
+  margin: 0 auto 22px;
   justify-content: center;
 }
 
 #king-card-name {
   margin: 0 0 10px;
   color: #00e5ff;
-  font-size: 28px;
+  font-size: 24px;
 }
 
 #king-card-rule {
   margin: 0 0 14px;
-  font-size: 22px;
+  font-size: 19px;
   line-height: 1.25;
 }
 
 #king-count-text {
   margin: 0;
   color: #ff6acb;
-  font-size: 15px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 @media (max-width: 380px) {
   .king-table {
-    width: 300px;
-    height: 300px;
+    width: 240px;
+    height: 240px;
+    margin-bottom: 26px;
   }
 
   .king-circle-card {
-    width: 44px;
-    height: 66px;
+    width: 32px;
+    height: 49px;
   }
 
   .king-cup-center {
-    width: 108px;
-    height: 108px;
+    width: 84px;
+    height: 84px;
+  }
+
+  .king-cup-center-img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .king-cup-center strong {
+    font-size: 9px;
+  }
+
+  #king-card-rule {
+    font-size: 17px;
   }
 }
 
@@ -1808,12 +1873,6 @@ h2 {
   position: relative;
 }
 
-#mode-screen #settings-btn.settings-cog {
-  top: -82px !important;
-  right: 22px !important;
-  left: auto !important;
-}
-
 /* =====================
    RED FLAG
 ===================== */
@@ -1837,13 +1896,13 @@ h2 {
 }
 
 .red-flag-profile-card.swipe-left {
-  transform: translateX(-140px) rotate(-12deg);
-  opacity: 0.5;
+  transform: translateX(-60px) rotate(-6deg);
+  opacity: 0.85;
 }
 
 .red-flag-profile-card.swipe-right {
-  transform: translateX(140px) rotate(12deg);
-  opacity: 0.5;
+  transform: translateX(60px) rotate(6deg);
+  opacity: 0.85;
 }
 
 .red-flag-avatar {
@@ -1967,18 +2026,18 @@ h2 {
 
 /* RED FLAG RESULT BOX */
 
-.red-flag-result-area {
+.red-flag-result {
   display: block;
   width: min(100%, 340px);
-  margin: 20px auto 18px;
-  padding: 18px 18px 20px;
+  margin: 14px auto 16px;
+  padding: 16px 18px;
 
-  border-radius: 24px;
+  border-radius: 22px;
   border: 2px solid rgba(0, 229, 255, 0.85);
 
   background: radial-gradient(
       circle at top left,
-      rgba(255, 43, 214, 0.35),
+      rgba(255, 43, 214, 0.36),
       transparent 42%
     ),
     radial-gradient(
@@ -1988,34 +2047,22 @@ h2 {
     ),
     rgba(34, 0, 58, 0.94);
 
+  color: white;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.25;
+  text-align: center;
+
+  text-shadow: 0 0 8px rgba(255, 43, 214, 0.8), 0 0 14px rgba(0, 229, 255, 0.35);
+
   box-shadow: 0 0 18px rgba(0, 229, 255, 0.45),
     0 0 34px rgba(255, 43, 214, 0.35), inset 0 0 22px rgba(255, 255, 255, 0.06);
 
   animation: redFlagResultPop 0.25s ease;
 }
 
-.red-flag-result-area.hidden {
+.red-flag-result.hidden {
   display: none !important;
-}
-
-#red-flag-result-title {
-  margin: 0 0 10px;
-  color: #00e5ff;
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  text-shadow: 0 0 8px rgba(0, 229, 255, 0.9), 0 0 14px rgba(255, 43, 214, 0.45);
-}
-
-#red-flag-result-text {
-  margin: 0;
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 1.25;
-  text-align: center;
-  text-shadow: 0 0 8px rgba(255, 43, 214, 0.8), 0 0 14px rgba(0, 229, 255, 0.35);
 }
 
 @keyframes redFlagResultPop {
@@ -2052,4 +2099,56 @@ h2 {
 
 .players-pill span {
   display: inline-block;
+}
+
+/* =====================
+   MAIN MENU SPACING FIX
+===================== */
+
+#mode-screen .mode-logo-img {
+  margin-bottom: 6px;
+}
+
+#mode-screen .top-bar {
+  margin-bottom: 8px;
+}
+
+#mode-screen .tagline {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+#mode-screen .players-pill {
+  margin: 10px auto 22px;
+}
+
+#mode-screen #settings-btn.settings-cog {
+  top: -55px !important;
+  right: 18px !important;
+  left: auto !important;
+}
+
+/* Prevent the page behind the players menu from fighting the sheet scroll */
+body.players-sheet-open {
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* Make the grab handle area easier to touch */
+.sheet-handle {
+  width: 88px;
+  height: 24px;
+  background: transparent;
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.sheet-handle::before {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.38);
+  margin: 8px auto 0;
 }
