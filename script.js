@@ -929,6 +929,16 @@ function animateCard(cardElement) {
   cardElement.classList.add("card-change");
 }
 
+function popResult(element) {
+  if (!element) return;
+
+  element.classList.remove("result-pop");
+
+  void element.offsetWidth;
+
+  element.classList.add("result-pop");
+}
+
 function getRandomCard() {
   const selectedCards = gameCards[currentMode]?.[currentPack];
 
@@ -1056,9 +1066,11 @@ function handleRedFlagSwipe(choice) {
 
   redFlagResult.textContent = getRandomRedFlagOutcome(choice);
   redFlagResult.classList.remove("hidden");
-
+  popResult(redFlagResult);
+  
   redFlagNextBtn.classList.remove("hidden");
-
+  popResult(redFlagNextBtn);
+  
   setTimeout(() => {
     redFlagCard.classList.remove("swipe-left", "swipe-right");
     redFlagCard.style.transform = "";
@@ -1606,24 +1618,32 @@ wheelBtn.addEventListener("click", () => {
   setTimeout(() => {
     resultFeedback();
     wheelResult.innerHTML = `${highlightedPlayerHTML(chosenPlayer)}, ${getPersonalisedPromptHTML(randomDare, chosenPlayer)}`;
+    popResult(wheelResult);
+    
     wheelBtn.disabled = false;
     wheelBtn.textContent = getText("spinAgain");
   }, 3000);
 });
 
 wheelBackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  showLeaveGameWarning(() => {
+    resetGameState();
+    showScreen(packScreen);
+  });
 });
 
 wheelChangeCategoryBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  showLeaveGameWarning(() => {
+    resetGameState();
+    showScreen(packScreen);
+  });
 });
 
 wheelBackGamesBtn.addEventListener("click", () => {
-  resetGameState({ includeImposter: true });
-  showScreen(modeScreen);
+  showLeaveGameWarning(() => {
+    resetGameState({ includeImposter: true });
+    showScreen(modeScreen);
+  });
 });
 
 truthBtn.addEventListener("click", () => {
@@ -1864,6 +1884,10 @@ function pullKingCard(card, cardElement, dragX, dragY) {
   kingCardName.textContent = `${card.rank}${card.suit}`;
   kingCardRule.textContent = ruleText;
   kingCountText.textContent = `${getText("kingCupKingsDrawn")}: ${kingsDrawn} / 4`;
+  
+  popResult(kingCardName);
+  popResult(kingCardRule);
+  popResult(kingCountText);
 
   cardElement.innerHTML = getKingFrontHTML(card);
   cardElement.classList.add("revealed");
@@ -1906,15 +1930,39 @@ function showKingCupEndScreen() {
 }
 
 kingCupBackBtn.addEventListener("click", () => {
-  askToLeaveKingCup(packScreen);
+  showLeaveGameWarning(
+    () => {
+      kingCupGameActive = false;
+      resetGameState();
+      showScreen(packScreen);
+    },
+    "Leave King’s Cup?",
+    "Are you sure you want to leave? The King’s Cup has not finished yet!"
+  );
 });
 
 kingChangePackBtn.addEventListener("click", () => {
-  askToLeaveKingCup(packScreen);
+  showLeaveGameWarning(
+    () => {
+      kingCupGameActive = false;
+      resetGameState();
+      showScreen(packScreen);
+    },
+    "Leave King’s Cup?",
+    "Are you sure you want to leave? The King’s Cup has not finished yet!"
+  );
 });
 
 kingBackGamesBtn.addEventListener("click", () => {
-  askToLeaveKingCup(modeScreen);
+  showLeaveGameWarning(
+    () => {
+      kingCupGameActive = false;
+      resetGameState({ includeImposter: true });
+      showScreen(modeScreen);
+    },
+    "Leave King’s Cup?",
+    "Are you sure you want to leave? The King’s Cup has not finished yet!"
+  );
 });
 
 kingPlayAgainBtn.addEventListener("click", () => {
@@ -1956,18 +2004,24 @@ truthDareNextBtn.addEventListener("click", () => {
 });
 
 truthDareBackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  showLeaveGameWarning(() => {
+    resetGameState();
+    showScreen(packScreen);
+  });
 });
 
 truthDareChangePackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  showLeaveGameWarning(() => {
+    resetGameState();
+    showScreen(packScreen);
+  });
 });
 
 truthDareBackGamesBtn.addEventListener("click", () => {
-  resetGameState({ includeImposter: true });
-  showScreen(modeScreen);
+  showLeaveGameWarning(() => {
+    resetGameState({ includeImposter: true });
+    showScreen(modeScreen);
+  });
 });
 
 packBackBtn.addEventListener("click", () => {
@@ -1980,19 +2034,25 @@ nextBtn.addEventListener("click", () => {
 });
 
 backBtn.addEventListener("click", () => {
-  closePlayersSheet();
-  resetGameState();
-  showScreen(packScreen);
+  showLeaveGameWarning(() => {
+    closePlayersSheet();
+    resetGameState();
+    showScreen(packScreen);
+  });
 });
 
 gameChangePackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  showLeaveGameWarning(() => {
+    resetGameState();
+    showScreen(packScreen);
+  });
 });
 
 gameBackGamesBtn.addEventListener("click", () => {
-  resetGameState({ includeImposter: true });
-  showScreen(modeScreen);
+  showLeaveGameWarning(() => {
+    resetGameState({ includeImposter: true });
+    showScreen(modeScreen);
+  });
 });
 
 openPlayersBtn.addEventListener("click", () => {
@@ -2015,6 +2075,42 @@ packHelpBtn.addEventListener("click", openHelpModal);
 
 closeHelpBtn.addEventListener("click", () => {
   helpModal.classList.add("hidden");
+});
+
+let pendingLeaveAction = null;
+
+function showLeaveGameWarning(action, title = "Leave Game?", text = "Are you sure you want to leave? Your current game progress will be lost.") {
+  warningFeedback();
+
+  pendingLeaveAction = action;
+
+  document.getElementById("leave-game-title").textContent = title;
+  document.getElementById("leave-game-text").textContent = text;
+
+  document.getElementById("leave-game-modal").classList.remove("hidden");
+}
+
+function hideLeaveGameWarning() {
+  document.getElementById("leave-game-modal").classList.add("hidden");
+  pendingLeaveAction = null;
+}
+
+document.getElementById("stay-game-btn").addEventListener("click", () => {
+  hideLeaveGameWarning();
+});
+
+document.getElementById("confirm-leave-game-btn").addEventListener("click", () => {
+  if (pendingLeaveAction) {
+    pendingLeaveAction();
+  }
+
+  hideLeaveGameWarning();
+});
+
+document.getElementById("leave-game-modal").addEventListener("click", event => {
+  if (event.target.id === "leave-game-modal") {
+    hideLeaveGameWarning();
+  }
 });
 
 function openPlayersSheet() {
@@ -2215,7 +2311,7 @@ voteNowBtn.addEventListener("click", () => {
 });
 
 voteBackBtn.addEventListener("click", () => {
-  startDiscussionScreen();
+  askToLeaveImposter(imposterDiscussionScreen);
 });
 
 function showVoteScreen() {
@@ -2291,6 +2387,9 @@ function showImposterResult(title, message, detail, nextAction) {
   }
 
   showScreen(imposterResultScreen);
+
+  popResult(imposterResultMessage);
+  popResult(imposterResultDetail);
 }
 
 imposterResultContinueBtn.addEventListener("click", () => {
@@ -2304,8 +2403,7 @@ imposterResultContinueBtn.addEventListener("click", () => {
 });
 
 imposterResultBackGamesBtn.addEventListener("click", () => {
-  resetGameState({ includeImposter: true });
-  showScreen(modeScreen);
+  askToLeaveImposter(modeScreen);
 });
 
 function setupWYRPlayer() {
@@ -2336,6 +2434,7 @@ function setupWYRPlayer() {
   wyrPlayerName.style.display = "none";
 
   showPersonalisedPrompt(wyrQuestionText, chosenCard);
+  popResult(wyrQuestionText);
 
   option1Btn.style.display = "none";
   option2Btn.style.display = "none";
@@ -2349,20 +2448,24 @@ wyrNextBtn.addEventListener("click", () => {
 });
 
 wyrBackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  showLeaveGameWarning(() => {
+    resetGameState();
+    showScreen(packScreen);
+  });
 });
 
 wyrChangePackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(packScreen);
+  showLeaveGameWarning(() => {
+    resetGameState();
+    showScreen(packScreen);
+  });
 });
 
 wyrBackGamesBtn.addEventListener("click", () => {
-  resetGameState({ includeImposter: true });
-  showScreen(modeScreen);
-
-  
+  showLeaveGameWarning(() => {
+    resetGameState({ includeImposter: true });
+    showScreen(modeScreen);
+  });
 });
 
 redFlagLeftBtn.addEventListener("click", () => {
@@ -2378,13 +2481,17 @@ redFlagNextBtn.addEventListener("click", () => {
 });
 
 redFlagBackBtn.addEventListener("click", () => {
-  resetGameState();
-  showScreen(modeScreen);
+  showLeaveGameWarning(() => {
+    resetGameState();
+    showScreen(modeScreen);
+  });
 });
 
 redFlagBackGamesBtn.addEventListener("click", () => {
-  resetGameState({ includeImposter: true });
-  showScreen(modeScreen);
+  showLeaveGameWarning(() => {
+    resetGameState({ includeImposter: true });
+    showScreen(modeScreen);
+  });
 });
 
 

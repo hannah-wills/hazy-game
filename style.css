@@ -109,6 +109,14 @@ h2 {
   height: 52px;
   border: none;
   border-radius: 50%;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  line-height: 1;
+  font-family: "Outfit", Arial, Helvetica, sans-serif;
 
   background: radial-gradient(
       circle at top left,
@@ -118,16 +126,7 @@ h2 {
     linear-gradient(180deg, rgba(35, 0, 58, 0.95), rgba(12, 0, 24, 0.98));
 
   border: 1px solid rgba(255, 79, 216, 0.38);
-
   color: white;
-  font-size: 36px;
-  font-weight: bold;
-  line-height: 1;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
   cursor: pointer;
 
   box-shadow: 0 6px 0 #1a002a, 0 12px 20px rgba(0, 0, 0, 0.34),
@@ -141,17 +140,18 @@ h2 {
 }
 
 #pack-help-btn {
-  font-size: 30px;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+  padding-bottom: 3px;
 }
 
-.icon-btn:first-child {
-  font-size: 42px;
-  padding: 0;
-}
 .chevron-icon {
   display: block;
+  font-size: 42px;
+  font-weight: 800;
   line-height: 1;
-  transform: translate(-1px, -4px);
+  transform: translateY(-3px);
 }
 .top-bar .icon-btn:last-child {
   left: auto;
@@ -856,6 +856,23 @@ h2 {
     transform: translateY(0) scale(1);
   }
 }
+
+.result-pop {
+  animation: resultPop 0.28s ease;
+}
+
+@keyframes resultPop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .wyr-rule-text {
   margin-top: 18px;
   color: #00e5ff;
@@ -2151,4 +2168,106 @@ body.players-sheet-open {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.38);
   margin: 8px auto 0;
+}
+
+#pack-screen {
+  padding-bottom: 92px;
+}
+
+#pack-screen .mode-grid {
+  gap: 12px;
+  margin: 18px 0 22px;
+}
+
+.pack-card {
+  min-height: 150px;
+  padding: 14px 12px;
+  border-radius: 24px;
+}
+
+.pack-card img {
+  width: 112px;
+  height: 112px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.pack-card div strong {
+  font-size: 18px;
+}
+
+.mode-card span,
+.pack-card span {
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+#launch-btn {
+  position: sticky;
+  bottom: 16px;
+  z-index: 40;
+  margin-top: 10px;
+}
+
+#pack-screen .tagline {
+  margin-bottom: 10px;
+}
+
+#pack-screen .players-pill {
+  margin: 8px auto 14px;
+}
+
+#vote-player-list {
+  gap: 14px;
+  margin-top: 24px;
+}
+
+#vote-player-list .mode-card {
+  position: relative;
+  min-height: 84px;
+  border-radius: 24px;
+  padding: 18px 20px;
+  overflow: hidden;
+
+  background: radial-gradient(
+      circle at top left,
+      rgba(255, 43, 214, 0.35),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(0, 229, 255, 0.22),
+      transparent 38%
+    ),
+    linear-gradient(180deg, #2b0047 0%, #10001f 100%);
+
+  border: 1px solid rgba(255, 79, 216, 0.55);
+
+  color: white;
+  font-size: 22px;
+  font-weight: 900;
+
+  box-shadow: 0 7px 0 #160024, 0 14px 24px rgba(0, 0, 0, 0.38),
+    0 0 20px rgba(255, 43, 214, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+#vote-player-list .mode-card::before {
+  content: "SUSPECT";
+  display: block;
+  margin-bottom: 6px;
+  color: #00e5ff;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
+}
+
+#vote-player-list .mode-card::after {
+  content: "🕵️";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  opacity: 0.75;
 }
