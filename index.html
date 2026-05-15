@@ -201,6 +201,18 @@
             </div>
           </button>
 
+          <button class="mode-card game-tile" data-mode="sabotage">
+            <img
+              src="assets/images/sabotage.png"
+              alt="Sabotage"
+              class="game-tile-img"
+            />
+            <div class="game-tile-text">
+              <strong>Sabotage</strong>
+              <span>Secretly trick players into completing tasks</span>
+            </div>
+          </button>
+
           <button class="mode-card game-tile" data-mode="redFlagAuction">
             <img
               src="assets/images/red-flag.png"
@@ -512,7 +524,13 @@
           <h2>Imposter</h2>
         </div>
 
-        <p class="tagline" id="pass-phone-text">Pass the phone to Player</p>
+        <div class="pass-phone-block">
+          <p class="pass-phone-label">PASS THE PHONE TO</p>
+          <p id="pass-phone-name" class="pass-phone-name">PLAYER</p>
+          <p id="pass-phone-helper" class="pass-phone-helper">
+            Make sure nobody else is looking
+          </p>
+        </div>
 
         <div class="card imposter-card">
           <p id="imposter-reveal-instruction">
@@ -580,6 +598,107 @@
 
         <button
           id="imposter-result-back-games-btn"
+          class="secondary-btn game-action-btn"
+        >
+          Back to Games
+        </button>
+      </section>
+
+      <section id="sabotage-screen" class="screen">
+        <div class="top-bar">
+          <button id="sabotage-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>Sabotage</h2>
+        </div>
+
+        <div class="pass-phone-block">
+          <p class="pass-phone-label">PASS THE PHONE TO</p>
+          <p id="sabotage-pass-name" class="pass-phone-name">PLAYER</p>
+          <p id="sabotage-pass-helper" class="pass-phone-helper">
+            Make sure nobody else is looking
+          </p>
+        </div>
+
+        <div class="card sabotage-card">
+          <p id="sabotage-instruction">SECRET TASK</p>
+          <p id="sabotage-task-text" class="hidden-role">
+            Tap reveal when ready
+          </p>
+        </div>
+
+        <button id="sabotage-reveal-btn" class="main-btn">Reveal Task</button>
+
+        <button id="sabotage-next-player-btn" class="main-btn hidden">
+          Next Player
+        </button>
+
+        <button id="sabotage-start-round-btn" class="main-btn hidden">
+          Start Round
+        </button>
+
+        <button
+          id="sabotage-reveal-back-games-btn"
+          class="secondary-btn game-action-btn"
+        >
+          Back to Games
+        </button>
+      </section>
+
+      <section id="sabotage-board-screen" class="screen">
+        <div class="top-bar">
+          <button id="sabotage-board-back-btn" class="icon-btn">
+            <span class="chevron-icon">‹</span>
+          </button>
+          <h2>Sabotage</h2>
+        </div>
+
+        <p class="tagline">
+          No tasks shown here. Players must remember their own sabotage.
+        </p>
+
+        <div class="sabotage-board-card">
+          <p class="mode-label">SECRET TASK BOARD</p>
+          <p class="sabotage-board-help">
+            When a player completes their task, tap their button.
+          </p>
+
+          <div id="sabotage-board-list" class="sabotage-board-list"></div>
+        </div>
+
+        <button
+          id="sabotage-board-back-games-btn"
+          class="secondary-btn game-action-btn"
+        >
+          Back to Games
+        </button>
+      </section>
+
+      <section id="sabotage-result-screen" class="screen">
+        <div class="top-bar">
+          <h2>Sabotage Result</h2>
+        </div>
+
+        <div class="card sabotage-result-card">
+          <p id="sabotage-result-title" class="sabotage-result-title">
+            Sabotage Complete!
+          </p>
+
+          <p id="sabotage-result-message">
+            Whoever was sabotaged takes 3 sips.
+          </p>
+        </div>
+
+        <button id="sabotage-return-board-btn" class="main-btn">
+          Back to Sabotage Board
+        </button>
+
+        <button id="sabotage-next-round-btn" class="main-btn hidden">
+          Next Round
+        </button>
+
+        <button
+          id="sabotage-result-back-games-btn"
           class="secondary-btn game-action-btn"
         >
           Back to Games

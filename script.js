@@ -89,7 +89,6 @@ const imposterCountDisplay = document.getElementById("imposter-count");
 const imposterSettingsContinueBtn = document.getElementById("imposter-settings-continue-btn");
 const imposterRevealScreen = document.getElementById("imposter-reveal-screen");
 const imposterRevealBackBtn = document.getElementById("imposter-reveal-back-btn");
-const passPhoneText = document.getElementById("pass-phone-text");
 const imposterRevealInstruction = document.getElementById("imposter-reveal-instruction");
 const imposterRoleText = document.getElementById("imposter-role-text");
 const imposterHintText = document.getElementById("imposter-hint-text");
@@ -166,6 +165,32 @@ const kingEndDetail = document.getElementById("king-end-detail");
 const kingPlayAgainBtn = document.getElementById("king-play-again-btn");
 const kingEndBackGamesBtn = document.getElementById("king-end-back-games-btn");
 
+const sabotageScreen = document.getElementById("sabotage-screen");
+const sabotageBackBtn = document.getElementById("sabotage-back-btn");
+const sabotagePassName = document.getElementById("sabotage-pass-name");
+const sabotagePassHelper = document.getElementById("sabotage-pass-helper");
+const sabotageInstruction = document.getElementById("sabotage-instruction");
+const sabotageTaskText = document.getElementById("sabotage-task-text");
+const sabotageRevealBtn = document.getElementById("sabotage-reveal-btn");
+const sabotageNextPlayerBtn = document.getElementById("sabotage-next-player-btn");
+const sabotageStartRoundBtn = document.getElementById("sabotage-start-round-btn");
+const sabotageRevealBackGamesBtn = document.getElementById("sabotage-reveal-back-games-btn");
+
+const sabotageBoardScreen = document.getElementById("sabotage-board-screen");
+const sabotageBoardBackBtn = document.getElementById("sabotage-board-back-btn");
+const sabotageBoardList = document.getElementById("sabotage-board-list");
+const sabotageBoardBackGamesBtn = document.getElementById("sabotage-board-back-games-btn");
+
+const sabotageResultScreen = document.getElementById("sabotage-result-screen");
+const sabotageResultTitle = document.getElementById("sabotage-result-title");
+const sabotageResultMessage = document.getElementById("sabotage-result-message");
+const sabotageReturnBoardBtn = document.getElementById("sabotage-return-board-btn");
+const sabotageNextRoundBtn = document.getElementById("sabotage-next-round-btn");
+const sabotageResultBackGamesBtn = document.getElementById("sabotage-result-back-games-btn");
+
+const passPhoneName = document.getElementById("pass-phone-name");
+const passPhoneHelper = document.getElementById("pass-phone-helper");
+
 let players = [];
 
 function loadSavedPlayers() {
@@ -219,6 +244,9 @@ let pendingKingCupLeaveScreen = null;
 let activeLeaveGame = "";
 let redFlagRecentCards = [];
 let currentRedFlagProfile = null;
+let sabotagePlayers = [];
+let currentSabotagePlayerIndex = 0;
+let sabotageGameActive = false;
 
 const redFlagResultOutcomes = {
   left: [
@@ -306,6 +334,10 @@ function resetGameState(options = {}) {
     imposterWord = "";
     imposterHint = "";
   }
+
+  sabotageGameActive = false;
+  sabotagePlayers = [];
+  currentSabotagePlayerIndex = 0;
 }
 
 const modeNames = {
@@ -319,6 +351,7 @@ const modeNames = {
   kingCup: "King's Cup",
   knowMeBetter: "Know Me Better",
   redFlagAuction: "Red Flag",
+  sabotage: "Sabotage",
 };
 
 function showScreen(screenToShow) {
@@ -338,7 +371,10 @@ function showScreen(screenToShow) {
     wheelScreen,
     kingCupScreen,
     kingEndScreen,
-    redFlagScreen
+    redFlagScreen,
+    sabotageScreen,
+    sabotageBoardScreen,
+    sabotageResultScreen
   ];
 
   screens.forEach(screen => {
@@ -622,6 +658,12 @@ const languageText = {
 
 helpRedFlagAuction:
   "Look at the profile and decide if you would swipe left or right. Once you choose, the red flag is revealed. If you ignored the red flag, you drink.",
+
+  introSabotage:
+  "Pass the phone around one player at a time.\nEach player secretly gets a sabotage task.\nTry to make someone else complete your task without them realising.\nIf you succeed, they drink.",
+
+helpSabotage:
+  "Each player secretly receives a task. Your goal is to trick another player into doing or saying it. If they do, reveal your task and make them drink.",
 
   },
 
@@ -1244,15 +1286,19 @@ return;
 function showImposterPlayer() {
   const currentPlayer = imposterPlayers[currentImposterPlayerIndex];
 
-  passPhoneText.textContent = `PASS THE PHONE TO ${currentPlayer.name.toUpperCase()}`;
-  imposterRevealInstruction.textContent = "Make sure nobody else is looking";
-  imposterRoleText.textContent = "SECRET ROLE";
+  passPhoneName.textContent = currentPlayer.name.toUpperCase();
+  passPhoneHelper.textContent = "Make sure nobody else is looking";
+
+  imposterRevealInstruction.textContent = "SECRET ROLE";
+  imposterRoleText.textContent = "Tap reveal when ready";
   imposterRoleText.classList.add("hidden-role");
   imposterHintText.textContent = "";
 
   revealRoleBtn.classList.remove("hidden");
   nextImposterPlayerBtn.classList.add("hidden");
 }
+
+
 
 function launchSelectedGame() {
   if (!selectedPack) {
@@ -1280,7 +1326,8 @@ function showGameIntro() {
     dareRoulette: getText("introDareRoulette"),
     kingCup: getText("introKingCup"),
     knowMeBetter: getText("introKnowMeBetter"),
-    redFlagAuction: getText("introRedFlagAuction")
+    redFlagAuction: getText("introRedFlagAuction"),
+    sabotage: getText("introSabotage")
   };
 
   const introCopy = introTextByMode[currentMode] || "";
@@ -1331,6 +1378,11 @@ function startGameFromIntro() {
   if (currentMode === "kingCup") {
     setupKingCup();
     showScreen(kingCupScreen);
+    return;
+  }
+
+  if (currentMode === "sabotage") {
+    startSabotageGame();
     return;
   }
 
@@ -1443,7 +1495,7 @@ modeCards.forEach(card => {
       return;
     }
 
-    if (currentMode === "redFlagAuction") {
+    if (currentMode === "redFlagAuction" || currentMode === "sabotage") {
       showGameIntro();
       return;
     }
@@ -1989,7 +2041,8 @@ function openHelpModal() {
     dareRoulette: getText("helpDareRoulette"),
     knowMeBetter: getText("helpKnowMeBetter"),
     kingCup: getText("helpKingCup"),
-    redFlagAuction: getText("helpRedFlagAuction")
+    redFlagAuction: getText("helpRedFlagAuction"),
+    sabotage: getText("helpSabotage"),
 
   };
 
@@ -2022,6 +2075,39 @@ truthDareBackGamesBtn.addEventListener("click", () => {
     resetGameState({ includeImposter: true });
     showScreen(modeScreen);
   });
+});
+
+sabotageRevealBtn.addEventListener("click", revealSabotageTask);
+
+sabotageNextPlayerBtn.addEventListener("click", nextSabotagePlayer);
+
+sabotageStartRoundBtn.addEventListener("click", startSabotageRound);
+
+sabotageBackBtn.addEventListener("click", () => {
+  leaveSabotageTo(modeScreen);
+});
+
+sabotageRevealBackGamesBtn.addEventListener("click", () => {
+  leaveSabotageTo(modeScreen);
+});
+
+sabotageBoardBackBtn.addEventListener("click", () => {
+  leaveSabotageTo(modeScreen);
+});
+
+sabotageBoardBackGamesBtn.addEventListener("click", () => {
+  leaveSabotageTo(modeScreen);
+});
+
+sabotageReturnBoardBtn.addEventListener("click", () => {
+  renderSabotageBoard();
+  showScreen(sabotageBoardScreen);
+});
+
+sabotageNextRoundBtn.addEventListener("click", goToNextSabotageRound);
+
+sabotageResultBackGamesBtn.addEventListener("click", () => {
+  leaveSabotageTo(modeScreen);
 });
 
 packBackBtn.addEventListener("click", () => {
@@ -2313,6 +2399,179 @@ voteNowBtn.addEventListener("click", () => {
 voteBackBtn.addEventListener("click", () => {
   askToLeaveImposter(imposterDiscussionScreen);
 });
+
+// =====================
+// SABOTAGE
+// =====================
+
+function startSabotageGame() {
+  const tasks = gameCards.sabotage?.[currentPack] || gameCards.sabotage?.classic;
+
+  if (!tasks || tasks.length === 0) {
+    showGameAlert(getText("comingSoonTitle"), getText("noCards"));
+    return;
+  }
+
+  sabotageGameActive = true;
+  currentSabotagePlayerIndex = 0;
+
+  const shuffledTasks = [...tasks].sort(() => Math.random() - 0.5);
+
+  sabotagePlayers = players.map((player, index) => ({
+    name: player,
+    task: shuffledTasks[index % shuffledTasks.length],
+    completed: false
+  }));
+
+  showSabotagePlayer();
+  showScreen(sabotageScreen);
+}
+
+function showSabotagePlayer() {
+  const currentPlayer = sabotagePlayers[currentSabotagePlayerIndex];
+
+  sabotagePassName.textContent = currentPlayer.name.toUpperCase();
+  sabotagePassHelper.textContent = "Make sure nobody else is looking";
+
+  sabotageInstruction.textContent = "SECRET TASK";
+  sabotageTaskText.textContent = "Tap reveal when ready";
+  sabotageTaskText.classList.add("hidden-role");
+
+  sabotageRevealBtn.classList.remove("hidden");
+  sabotageNextPlayerBtn.classList.add("hidden");
+  sabotageStartRoundBtn.classList.add("hidden");
+}
+
+function revealSabotageTask() {
+  const currentPlayer = sabotagePlayers[currentSabotagePlayerIndex];
+
+  sabotageTaskText.classList.remove("hidden-role");
+  sabotageTaskText.textContent = currentPlayer.task;
+  sabotageInstruction.textContent = "Keep this secret and try to sabotage someone.";
+
+  sabotageRevealBtn.classList.add("hidden");
+
+  if (currentSabotagePlayerIndex < sabotagePlayers.length - 1) {
+    sabotageNextPlayerBtn.classList.remove("hidden");
+  } else {
+    sabotageStartRoundBtn.classList.remove("hidden");
+  }
+
+  resultFeedback();
+}
+
+function nextSabotagePlayer() {
+  currentSabotagePlayerIndex++;
+
+  if (currentSabotagePlayerIndex >= sabotagePlayers.length) {
+    startSabotageRound();
+    return;
+  }
+
+  showSabotagePlayer();
+}
+
+function startSabotageRound() {
+  renderSabotageBoard();
+  showScreen(sabotageBoardScreen);
+}
+
+function renderSabotageBoard() {
+  sabotageBoardList.innerHTML = "";
+
+  sabotagePlayers.forEach(player => {
+    const row = document.createElement("div");
+    row.className = "sabotage-board-row";
+
+    if (player.completed) {
+      row.classList.add("completed");
+    }
+
+    const playerInfo = document.createElement("div");
+    playerInfo.className = "sabotage-board-player";
+
+    const name = document.createElement("strong");
+    name.textContent = player.name;
+
+    const status = document.createElement("span");
+    status.textContent = player.completed ? "Task completed" : "Still sabotaging";
+
+    playerInfo.appendChild(name);
+    playerInfo.appendChild(status);
+
+    const button = document.createElement("button");
+    button.className = "sabotage-complete-mini-btn";
+    button.textContent = player.completed ? "Done" : "Complete";
+    button.disabled = player.completed;
+
+    button.addEventListener("click", () => {
+      completeSabotageTask(player);
+    });
+
+    row.appendChild(playerInfo);
+    row.appendChild(button);
+
+    sabotageBoardList.appendChild(row);
+  });
+}
+
+function completeSabotageTask(player) {
+  player.completed = true;
+
+  const punishments = [
+    "takes 1 sip.",
+    "takes 2 sips.",
+    "takes 3 sips.",
+    "takes 4 sips.",
+    "takes 5 sips.",
+    "downs their drink."
+  ];
+
+  const randomPunishment =
+    punishments[Math.floor(Math.random() * punishments.length)];
+
+  sabotageResultTitle.textContent = `${player.name} completed their sabotage!`;
+
+  sabotageResultMessage.innerHTML = `
+    <span class="sabotage-task-reveal-label">Their task was</span>
+    <span class="sabotage-task-reveal">“${escapeHTML(player.task)}”</span>
+    <span class="sabotage-punishment-text">
+      Whoever was sabotaged ${randomPunishment}
+    </span>
+  `;
+
+  const allCompleted = sabotagePlayers.every(player => player.completed);
+
+  if (allCompleted) {
+    sabotageReturnBoardBtn.classList.add("hidden");
+    sabotageNextRoundBtn.classList.remove("hidden");
+  } else {
+    sabotageReturnBoardBtn.classList.remove("hidden");
+    sabotageNextRoundBtn.classList.add("hidden");
+  }
+
+  showScreen(sabotageResultScreen);
+
+  resultFeedback();
+  popResult(sabotageResultTitle);
+  popResult(sabotageResultMessage);
+}
+
+function goToNextSabotageRound() {
+  startSabotageGame();
+}
+
+function leaveSabotageTo(targetScreen) {
+  showLeaveGameWarning(
+    () => {
+      sabotageGameActive = false;
+      resetGameState();
+      showScreen(targetScreen);
+    },
+    "Leave Sabotage?",
+    "Are you sure you want to leave? The sabotage round will be lost."
+  );
+}
 
 function showVoteScreen() {
   votePlayerList.innerHTML = "";
