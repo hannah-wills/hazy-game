@@ -1,4 +1,4 @@
-const CACHE_NAME = "hazy-v86";
+const CACHE_NAME = "hazy-v88";
 
 const FILES_TO_CACHE = [
   "./",
