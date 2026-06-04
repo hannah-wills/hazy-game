@@ -1698,8 +1698,13 @@ wheelBackGamesBtn.addEventListener("click", () => {
   });
 });
 
+function getTruthOrDarePack() {
+  return gameCards.truthOrDare?.[currentPack] || gameCards.truthOrDare?.classic;
+}
+
 truthBtn.addEventListener("click", () => {
-  const truths = gameCards.truthOrDare?.[currentPack]?.truths || [];
+  const pack = getTruthOrDarePack();
+  const truths = pack?.truths || [];
 
   if (truths.length === 0) {
     truthDareText.textContent = getText("noTruthCards");
@@ -1708,7 +1713,12 @@ truthBtn.addEventListener("click", () => {
 
   const randomIndex = Math.floor(Math.random() * truths.length);
 
-  showPersonalisedPrompt(truthDareText, truths[randomIndex], truthDarePlayer.textContent);
+  showPersonalisedPrompt(
+    truthDareText,
+    truths[randomIndex],
+    truthDarePlayer.textContent
+  );
+
   animateCard(truthDareCard);
 
   truthBtn.style.display = "none";
@@ -1717,7 +1727,8 @@ truthBtn.addEventListener("click", () => {
 });
 
 dareBtn.addEventListener("click", () => {
-  const dares = gameCards.truthOrDare?.[currentPack]?.dares || [];
+  const pack = getTruthOrDarePack();
+  const dares = pack?.dares || [];
 
   if (dares.length === 0) {
     truthDareText.textContent = getText("noDareCards");
