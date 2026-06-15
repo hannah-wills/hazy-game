@@ -164,6 +164,7 @@ const sabotageBoardScreen = document.getElementById("sabotage-board-screen");
 const sabotageBoardBackBtn = document.getElementById("sabotage-board-back-btn");
 const sabotageBoardList = document.getElementById("sabotage-board-list");
 const sabotageBoardBackGamesBtn = document.getElementById("sabotage-board-back-games-btn");
+const endSabotageBtn = document.getElementById("end-sabotage-btn");
 
 const sabotageResultScreen = document.getElementById("sabotage-result-screen");
 const sabotageResultTitle = document.getElementById("sabotage-result-title");
@@ -229,6 +230,7 @@ let activeLeaveGame = "";
 let sabotagePlayers = [];
 let currentSabotagePlayerIndex = 0;
 let sabotageGameActive = false;
+let cardDecks = {};
 
 function resetGameState(options = {}) {
   clearInterval(discussionInterval);
@@ -237,6 +239,7 @@ function resetGameState(options = {}) {
   wyrRecentCards = [];
   lastPlayer = "";
   nextResultAction = "";
+  cardDecks = {};
 
   sipAmount.textContent = "";
   playerName.textContent = "";
@@ -276,9 +279,11 @@ function resetGameState(options = {}) {
     imposterHint = "";
   }
 
-  sabotageGameActive = false;
-  sabotagePlayers = [];
-  currentSabotagePlayerIndex = 0;
+  if (options.includeSabotage) {
+    sabotageGameActive = false;
+    sabotagePlayers = [];
+    currentSabotagePlayerIndex = 0;
+  }
 }
 
 const modeNames = {
@@ -593,9 +598,9 @@ const languageText = {
   "The named player secretly thinks of their answer.\nEveryone else guesses what they would say.\nWrong guesses drink the sips shown.",
 
   introSabotage:
-  "Pass the phone around one player at a time.\nEach player secretly gets a sabotage task.\nTry to make someone else complete your task without them realising.\nIf you succeed, they drink.",
+  "Pass the phone around one player at a time.\nEach player secretly gets a sabotage task.\nSabotage then runs in the background while you play other games.\nTry to make someone else complete your task without them realising.\nIf you succeed, return to Sabotage and mark it complete.",
 
-helpSabotage:
+  helpSabotage:
   "Each player secretly receives a task. Your goal is to trick another player into doing or saying it. If they do, reveal your task and make them drink.",
 
   },
@@ -676,9 +681,6 @@ function applySettingsToUI() {
     wheelBtn.textContent = getText("spin");
  
   }
-
-  if (redFlagNextBtn) redFlagNextBtn.textContent = "Next Profile";
-  if (redFlagBackGamesBtn) redFlagBackGamesBtn.textContent = getText("backToGames");
 }
 
 function openSettings() {
@@ -923,21 +925,10 @@ function getRandomCard() {
     return;
   }
 
-  let chosenCard;
-
-  do {
-    const randomCardIndex = Math.floor(Math.random() * selectedCards.length);
-    chosenCard = selectedCards[randomCardIndex];
-  } while (
-    recentCards.includes(chosenCard) &&
-    selectedCards.length > recentCards.length
+  const chosenCard = drawUniqueCard(
+    selectedCards,
+    `${currentMode}:${currentPack}`
   );
-
-  recentCards.push(chosenCard);
-
-  if (recentCards.length > 6) {
-    recentCards.shift();
-  }
 
   const randomSips = Math.floor(Math.random() * 3) + 1;
   let currentCardPlayer = "";
@@ -964,6 +955,29 @@ function getRandomCard() {
 
   showPersonalisedPrompt(cardText, chosenCard, currentCardPlayer);
   animateCard(mainCard);
+}
+
+function shuffleCards(cards) {
+  const shuffled = [...cards];
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[i]];
+  }
+
+  return shuffled;
+}
+
+function drawUniqueCard(cards, deckKey) {
+  if (!cards || cards.length === 0) {
+    return "";
+  }
+
+  if (!cardDecks[deckKey] || cardDecks[deckKey].length === 0) {
+    cardDecks[deckKey] = shuffleCards(cards);
+  }
+
+  return cardDecks[deckKey].pop();
 }
 
 function setupTruthDarePlayer() {
@@ -1226,6 +1240,11 @@ introStartBtn.addEventListener("click", () => {
 });
 
 introBackBtn.addEventListener("click", () => {
+  if (currentMode === "sabotage") {
+    showScreen(modeScreen);
+    return;
+  }
+
   showScreen(packScreen);
 });
 
@@ -1270,6 +1289,12 @@ modeCards.forEach(card => {
     }
 
     if (currentMode === "sabotage") {
+      if (sabotageGameActive && sabotagePlayers.length > 0) {
+        renderSabotageBoard();
+        showScreen(sabotageBoardScreen);
+        return;
+      }
+    
       showGameIntro();
       return;
     }
@@ -1312,8 +1337,10 @@ function getRandomDare(category) {
     return getText("noDares");
   }
 
-  const randomIndex = Math.floor(Math.random() * selectedDares.length);
-  return selectedDares[randomIndex];
+  return drawUniqueCard(
+    selectedDares,
+    `dareRoulette:${category}`
+  );
 }
 
 function renderWheel() {
@@ -1485,11 +1512,14 @@ truthBtn.addEventListener("click", () => {
     return;
   }
 
-  const randomIndex = Math.floor(Math.random() * truths.length);
-
+  const chosenTruth = drawUniqueCard(
+    truths,
+    `truthOrDare:${currentPack}:truths`
+  );
+  
   showPersonalisedPrompt(
     truthDareText,
-    truths[randomIndex],
+    chosenTruth,
     truthDarePlayer.textContent
   );
 
@@ -1509,11 +1539,14 @@ dareBtn.addEventListener("click", () => {
     return;
   }
 
-  const randomIndex = Math.floor(Math.random() * dares.length);
-
+  const chosenDare = drawUniqueCard(
+    dares,
+    `truthOrDare:${currentPack}:dares`
+  );
+  
   showPersonalisedPrompt(
     truthDareText,
-    dares[randomIndex],
+    chosenDare,
     truthDarePlayer.textContent
   );
 
@@ -1876,11 +1909,11 @@ sabotageRevealBackGamesBtn.addEventListener("click", () => {
 });
 
 sabotageBoardBackBtn.addEventListener("click", () => {
-  leaveSabotageTo(modeScreen);
+  showScreen(modeScreen);
 });
 
 sabotageBoardBackGamesBtn.addEventListener("click", () => {
-  leaveSabotageTo(modeScreen);
+  showScreen(modeScreen);
 });
 
 sabotageReturnBoardBtn.addEventListener("click", () => {
@@ -1929,7 +1962,18 @@ openPlayersBtn.addEventListener("click", () => {
   openPlayersSheet();
 });
 
-
+if (endSabotageBtn) {
+  endSabotageBtn.addEventListener("click", () => {
+    showLeaveGameWarning(
+      () => {
+        resetGameState({ includeSabotage: true });
+        showScreen(modeScreen);
+      },
+      "End Sabotage?",
+      "Are you sure? The current sabotage tasks will be lost."
+    );
+  });
+}
 
 packPlayersBtn.addEventListener("click", () => {
   openPlayersSheet();
@@ -2256,8 +2300,14 @@ function nextSabotagePlayer() {
 }
 
 function startSabotageRound() {
-  renderSabotageBoard();
-  showScreen(sabotageBoardScreen);
+  sabotageGameActive = true;
+
+  showGameAlert(
+    "Sabotage Active",
+    "Sabotage is now running in the background. Choose another game and keep your tasks secret."
+  );
+
+  showScreen(modeScreen);
 }
 
 function renderSabotageBoard() {
@@ -2458,21 +2508,10 @@ function setupWYRPlayer() {
     return;
   }
 
-  let chosenCard;
-
-  do {
-    const randomIndex = Math.floor(Math.random() * selectedCards.length);
-    chosenCard = selectedCards[randomIndex];
-  } while (
-    wyrRecentCards.includes(chosenCard) &&
-    selectedCards.length > wyrRecentCards.length
+  const chosenCard = drawUniqueCard(
+    selectedCards,
+    `wouldYouRather:${currentPack}`
   );
-
-  wyrRecentCards.push(chosenCard);
-
-  if (wyrRecentCards.length > 6) {
-    wyrRecentCards.shift();
-  }
 
   wyrPlayerName.style.display = "none";
 
