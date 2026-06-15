@@ -125,22 +125,6 @@ const wyrNextBtn = document.getElementById("wyr-next-btn");
 const wyrChangePackBtn = document.getElementById("wyr-change-pack-btn");
 const wyrBackGamesBtn = document.getElementById("wyr-back-games-btn");
 
-const redFlagScreen = document.getElementById("red-flag-screen");
-const redFlagBackBtn = document.getElementById("red-flag-back-btn");
-const redFlagCard = document.getElementById("red-flag-card");
-const redFlagName = document.getElementById("red-flag-name");
-const redFlagAge = document.getElementById("red-flag-age");
-const redFlagTrait1 = document.getElementById("red-flag-trait-1");
-const redFlagTrait2 = document.getElementById("red-flag-trait-2");
-const redFlagTrait3 = document.getElementById("red-flag-trait-3");
-const redFlagRevealBox = document.getElementById("red-flag-reveal-box");
-const redFlagText = document.getElementById("red-flag-text");
-const redFlagLeftBtn = document.getElementById("red-flag-left-btn");
-const redFlagRightBtn = document.getElementById("red-flag-right-btn");
-const redFlagResult = document.getElementById("red-flag-result");
-const redFlagNextBtn = document.getElementById("red-flag-next-btn");
-const redFlagBackGamesBtn = document.getElementById("red-flag-back-games-btn");
-
 const wheelScreen = document.getElementById("dare-wheel-screen");
 const wheelBackBtn = document.getElementById("wheel-back-btn");
 const wheelBtn = document.getElementById("spin-wheel-btn");
@@ -242,34 +226,9 @@ let kingsDrawn = 0;
 let kingCupGameActive = false;
 let pendingKingCupLeaveScreen = null;
 let activeLeaveGame = "";
-let redFlagRecentCards = [];
-let currentRedFlagProfile = null;
 let sabotagePlayers = [];
 let currentSabotagePlayerIndex = 0;
 let sabotageGameActive = false;
-
-const redFlagResultOutcomes = {
-  left: [
-    "Too picky? You swiped left. Take 1 sip.",
-    "You rejected them. Give 2 sips to someone who would have risked it.",
-    "Safe but savage. Take 1 sip.",
-    "You dodged the red flag. Choose someone to drink 1 sip.",
-    "You said no too fast. Take 2 sips."
-  ],
-
-  right: [
-    "You fell for the profile. Take 2 sips.",
-    "Risky choice. Take 1 sip and choose someone else to take 1.",
-    "You swiped right anyway. Take 3 sips.",
-    "No standards tonight. Take 2 sips.",
-    "You fell for the profile. Take 1 sip."
-  ]
-};
-
-function getRandomRedFlagOutcome(choice) {
-  const outcomes = redFlagResultOutcomes[choice] || redFlagResultOutcomes.right;
-  return outcomes[Math.floor(Math.random() * outcomes.length)];
-}
 
 function resetGameState(options = {}) {
   clearInterval(discussionInterval);
@@ -295,24 +254,6 @@ function resetGameState(options = {}) {
   option2Btn.style.display = "none";
   wyrNextBtn.style.display = "block";
   wyrNextBtn.textContent = "Next Question";
-
-  redFlagRecentCards = [];
-  currentRedFlagProfile = null;
-  
-  if (redFlagResult) {
-    redFlagResult.textContent = "";
-    redFlagResult.classList.add("hidden");
-  }
-  
-  if (redFlagRevealBox) redFlagRevealBox.classList.add("hidden");
-  if (redFlagNextBtn) redFlagNextBtn.classList.add("hidden");
-  if (redFlagLeftBtn) redFlagLeftBtn.disabled = false;
-  if (redFlagRightBtn) redFlagRightBtn.disabled = false;
-  
-  if (redFlagCard) {
-    redFlagCard.classList.remove("swipe-left", "swipe-right", "dragging");
-    redFlagCard.style.transform = "";
-  }
 
   wheelRotation = 0;
   wheelResult.textContent = "";
@@ -350,7 +291,6 @@ const modeNames = {
   dareRoulette: "Dare Roulette",
   kingCup: "King's Cup",
   knowMeBetter: "Know Me Better",
-  redFlagAuction: "Red Flag",
   sabotage: "Sabotage",
 };
 
@@ -371,7 +311,6 @@ function showScreen(screenToShow) {
     wheelScreen,
     kingCupScreen,
     kingEndScreen,
-    redFlagScreen,
     sabotageScreen,
     sabotageBoardScreen,
     sabotageResultScreen
@@ -652,12 +591,6 @@ const languageText = {
 
   introKnowMeBetter:
   "The named player secretly thinks of their answer.\nEveryone else guesses what they would say.\nWrong guesses drink the sips shown.",
-
-  introRedFlagAuction:
-  "Look at the profile.\nSwipe left if you would reject them.\nSwipe right if you would risk it.\nThen reveal the red flag.",
-
-helpRedFlagAuction:
-  "Look at the profile and decide if you would swipe left or right. Once you choose, the red flag is revealed. If you ignored the red flag, you drink.",
 
   introSabotage:
   "Pass the phone around one player at a time.\nEach player secretly gets a sabotage task.\nTry to make someone else complete your task without them realising.\nIf you succeed, they drink.",
@@ -1033,153 +966,6 @@ function getRandomCard() {
   animateCard(mainCard);
 }
 
-function setupRedFlagProfile() {
-  const selectedProfiles = gameCards.redFlagAuction?.classic;
-
-  if (!selectedProfiles || selectedProfiles.length === 0) {
-    showGameAlert(getText("comingSoonTitle"), getText("noCards"));
-    return;
-  }
-
-  let chosenProfile;
-
-  do {
-    const randomIndex = Math.floor(Math.random() * selectedProfiles.length);
-    chosenProfile = selectedProfiles[randomIndex];
-  } while (
-    redFlagRecentCards.includes(chosenProfile) &&
-    selectedProfiles.length > redFlagRecentCards.length
-  );
-
-  redFlagRecentCards.push(chosenProfile);
-
-  if (redFlagRecentCards.length > 6) {
-    redFlagRecentCards.shift();
-  }
-
-  currentRedFlagProfile = chosenProfile;
-
-  redFlagName.textContent = chosenProfile.name;
-  redFlagAge.textContent = `Age: ${chosenProfile.age}`;
-  redFlagTrait1.textContent = chosenProfile.traits[0];
-  redFlagTrait2.textContent = chosenProfile.traits[1];
-  redFlagTrait3.textContent = chosenProfile.traits[2];
-  redFlagText.textContent = chosenProfile.redFlag;
-
-  redFlagRevealBox.classList.add("hidden");
-
-  redFlagResult.textContent = "";
-  redFlagResult.classList.add("hidden");
-
-  redFlagNextBtn.classList.add("hidden");
-
-  redFlagLeftBtn.disabled = false;
-  redFlagRightBtn.disabled = false;
-
-  redFlagCard.classList.remove("swipe-left", "swipe-right", "dragging", "card-change");
-  redFlagCard.style.transform = "";
-  redFlagCard.style.opacity = "";
-
-  void redFlagCard.offsetWidth;
-  redFlagCard.classList.add("card-change");
-
-  const currentPlayer = getRandomPlayer();
-  document.getElementById("red-flag-current-player").textContent =
-    `${currentPlayer}, would you swipe?`;
-}
-
-function handleRedFlagSwipe(choice) {
-  if (!currentRedFlagProfile) return;
-
-  redFlagLeftBtn.disabled = true;
-  redFlagRightBtn.disabled = true;
-
-  redFlagRevealBox.classList.remove("hidden");
-
-  redFlagCard.classList.remove("swipe-left", "swipe-right");
-  redFlagCard.style.transform = "";
-  redFlagCard.style.opacity = "";
-
-  if (choice === "right") {
-    redFlagCard.classList.add("swipe-right");
-  } else {
-    redFlagCard.classList.add("swipe-left");
-  }
-
-  redFlagResult.textContent = getRandomRedFlagOutcome(choice);
-  redFlagResult.classList.remove("hidden");
-  popResult(redFlagResult);
-  
-  redFlagNextBtn.classList.remove("hidden");
-  popResult(redFlagNextBtn);
-  
-  setTimeout(() => {
-    redFlagCard.classList.remove("swipe-left", "swipe-right");
-    redFlagCard.style.transform = "";
-    redFlagCard.style.opacity = "";
-  }, 260);
-
-  resultFeedback();
-}
-
-function addRedFlagSwipeGesture() {
-  if (!redFlagCard) return;
-
-  let isDragging = false;
-  let startX = 0;
-  let currentX = 0;
-
-  redFlagCard.addEventListener("pointerdown", event => {
-    if (redFlagLeftBtn.disabled || redFlagRightBtn.disabled) return;
-
-    isDragging = true;
-    startX = event.clientX;
-    currentX = 0;
-
-    redFlagCard.classList.add("dragging");
-    redFlagCard.setPointerCapture(event.pointerId);
-  });
-
-  redFlagCard.addEventListener("pointermove", event => {
-    if (!isDragging) return;
-
-    currentX = event.clientX - startX;
-
-    const limitedX = Math.max(-120, Math.min(120, currentX));
-    const rotate = limitedX * 0.06;
-
-    redFlagCard.style.transform =
-      `translateX(${limitedX}px) rotate(${rotate}deg)`;
-  });
-
-  redFlagCard.addEventListener("pointerup", () => {
-    if (!isDragging) return;
-
-    isDragging = false;
-    redFlagCard.classList.remove("dragging");
-
-    if (currentX > 75) {
-      redFlagCard.style.transform = "";
-      handleRedFlagSwipe("right");
-      return;
-    }
-
-    if (currentX < -75) {
-      redFlagCard.style.transform = "";
-      handleRedFlagSwipe("left");
-      return;
-    }
-
-    redFlagCard.style.transform = "";
-  });
-
-  redFlagCard.addEventListener("pointercancel", () => {
-    isDragging = false;
-    redFlagCard.classList.remove("dragging");
-    redFlagCard.style.transform = "";
-  });
-}
-
 function setupTruthDarePlayer() {
   if (players.length === 0) return;
 
@@ -1326,7 +1112,6 @@ function showGameIntro() {
     dareRoulette: getText("introDareRoulette"),
     kingCup: getText("introKingCup"),
     knowMeBetter: getText("introKnowMeBetter"),
-    redFlagAuction: getText("introRedFlagAuction"),
     sabotage: getText("introSabotage")
   };
 
@@ -1357,12 +1142,6 @@ function startGameFromIntro() {
   if (currentMode === "wouldYouRather") {
     setupWYRPlayer();
     showScreen(wyrScreen);
-    return;
-  }
-
-  if (currentMode === "redFlagAuction") {
-    setupRedFlagProfile();
-    showScreen(redFlagScreen);
     return;
   }
 
@@ -1447,11 +1226,6 @@ introStartBtn.addEventListener("click", () => {
 });
 
 introBackBtn.addEventListener("click", () => {
-  if (currentMode === "redFlagAuction") {
-    showScreen(modeScreen);
-    return;
-  }
-
   showScreen(packScreen);
 });
 
@@ -1495,7 +1269,7 @@ modeCards.forEach(card => {
       return;
     }
 
-    if (currentMode === "redFlagAuction" || currentMode === "sabotage") {
+    if (currentMode === "sabotage") {
       showGameIntro();
       return;
     }
@@ -2052,7 +1826,6 @@ function openHelpModal() {
     dareRoulette: getText("helpDareRoulette"),
     knowMeBetter: getText("helpKnowMeBetter"),
     kingCup: getText("helpKingCup"),
-    redFlagAuction: getText("helpRedFlagAuction"),
     sabotage: getText("helpSabotage"),
 
   };
@@ -2738,34 +2511,6 @@ wyrBackGamesBtn.addEventListener("click", () => {
   });
 });
 
-redFlagLeftBtn.addEventListener("click", () => {
-  handleRedFlagSwipe("left");
-});
-
-redFlagRightBtn.addEventListener("click", () => {
-  handleRedFlagSwipe("right");
-});
-
-redFlagNextBtn.addEventListener("click", () => {
-  setupRedFlagProfile();
-});
-
-redFlagBackBtn.addEventListener("click", () => {
-  showLeaveGameWarning(() => {
-    resetGameState();
-    showScreen(modeScreen);
-  });
-});
-
-redFlagBackGamesBtn.addEventListener("click", () => {
-  showLeaveGameWarning(() => {
-    resetGameState({ includeImposter: true });
-    showScreen(modeScreen);
-  });
-});
-
-
-addRedFlagSwipeGesture();
 loadSavedPlayers();
 applySettingsToUI();
 
